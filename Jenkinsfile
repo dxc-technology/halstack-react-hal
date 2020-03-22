@@ -23,6 +23,21 @@ pipeline {
                     }
             }
         }
+        stage('.npmrc') {
+          steps {
+            // Insert .npmrc
+            withCredentials([file(credentialsId: 'npmrc', variable: 'CONFIG')]) {
+                sh "touch ~/.npmrc"
+                sh "echo '//registry.npmjs.org/:always-auth=false' >> ~/.npmrc"
+                sh '''
+                    cat ${CONFIG} >> ~/.npmrc
+                '''
+                sh '''
+                    cat ~/.npmrc
+                '''
+            }
+          }
+        }
         stage('Install dependencies') {
             steps {
                 sh '''
@@ -37,15 +52,6 @@ pipeline {
                     cd lib
                     npm run build
                 '''
-            }
-        }
-        stage('.npmrc') {
-            steps {
-                withCredentials([file(credentialsId: 'npmrc', variable: 'CONFIG')]) {
-                    sh '''
-                        cat ${CONFIG} > ~/.npmrc
-                    '''
-                }
             }
         }
         stage('Publish diaas-react-hal-components alpha version to Artifactory ') {
