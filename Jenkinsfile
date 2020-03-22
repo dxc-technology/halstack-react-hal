@@ -31,7 +31,7 @@ pipeline {
                 '''
             }
         }
-        stage('Build diaas-cognito-login-react library') {
+        stage('Build diaas-react-hal-components library') {
             steps {
                 sh '''
                     cd lib
@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        stage('Publish diaas-cognito-login-react alpha version to Artifactory ') {
+        stage('Publish diaas-react-hal-components alpha version to Artifactory ') {
             when { branch 'master' }
             steps {                
                 sh "sed -i -e 's/${OLD_RELEASE_NUMBER}/'${OLD_RELEASE_NUMBER}-alpha.${BUILD_ID}'/g' ./lib/package.json"
@@ -81,7 +81,7 @@ pipeline {
                     returnStdout: true
                 ).trim()
                 if (BRANCH_NAME ==~ /^.*\b(release)\b.*$/ && env.RELEASE_VALID == 'valid') {
-                    emailext mimeType: 'text/html', subject: "New DXC diaas-cognito-login-react Release! Check out the new changes in this version: ${env.RELEASE_NUMBER} :)", body: '${FILE,path="./CHANGELOG.html"}', to: 'gvigilrodrig@dxc.com; jsuarezardid@dxc.com',from: 'gvigilrodrig@dxc.com'
+                    emailext mimeType: 'text/html', subject: "New DXC diaas-react-hal-components Release! Check out the new changes in this version: ${env.RELEASE_NUMBER} :)", body: '${FILE,path="./CHANGELOG.html"}', to: 'gvigilrodrig@dxc.com; jsuarezardid@dxc.com',from: 'gvigilrodrig@dxc.com'
                 } else if (GIT_USER != 'jenkins@dxc.com') {
                     emailext subject: 'Your changes passed succesfully all the stages, you are a really good developer! YES, YOU ARE :)', body: "Commit: ${GIT_COMMIT}\n Url: ${GIT_URL}\n Branch: ${GIT_BRANCH}", to: "${GIT_USER}",from: 'gvigilrodrig@dxc.com'
                 }
