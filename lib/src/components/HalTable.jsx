@@ -69,7 +69,7 @@ const useCollection = (collectionUrl, headers, itemsPerPage) => {
   };
 };
 
-const DxcHALTable = ({ colletionUrl, headers, columns, itemsPerPage = 5 }) => {
+const HalTable = ({ colletionUrl, headers, columns, itemsPerPage = 5 }) => {
   const {
     isLoading,
     navigationFunctions,
@@ -199,4 +199,4 @@ const EmptyTableRow = styled.div`
   margin-top: 10px;
 `;
 
-export default DxcHALTable;
+export default HalTable;

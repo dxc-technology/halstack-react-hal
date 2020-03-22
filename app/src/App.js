@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DxcHalTable, useHalResource } from "@diaas/diaas-react-hal-components";
+import { HalTable, useHalResource } from "@diaas/diaas-react-hal-components";
 
 export default () => {
   const [user, userStatus, userError, userHandlers] = useHalResource({
@@ -10,7 +10,7 @@ export default () => {
   return (
     <div>
       <div>{userStatus}</div>
-      <DxcHalTable
+      <HalTable
         colletionUrl={
           "https://bgqrqjl2t2.execute-api.us-west-1.amazonaws.com/dev/realms/us-east-1_wCPANetpN/users"
         }
@@ -38,7 +38,7 @@ export default () => {
         ]}
       >
         {userStatus}
-      </DxcHalTable>
+      </HalTable>
     </div>
   );
 };
