@@ -4,17 +4,12 @@ import axios from "axios";
 import styled from "styled-components";
 
 const addPageParams = ({ collectionUrl, page, itemsPerPage }) => {
-  return `${collectionUrl}${
-    collectionUrl.includes("?") ? "&" : "?"
-  }_start=${(page - 1) * itemsPerPage + 1}&_num=${itemsPerPage}`;
+  return `${collectionUrl}${collectionUrl.includes("?") ? "&" : "?"}_start=${(page - 1) *
+    itemsPerPage +
+    1}&_num=${itemsPerPage}`;
 };
 
-const useCollection = (
-  collectionUrl,
-  asyncHeadersHandler,
-  headers = {},
-  itemsPerPage
-) => {
+const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPerPage) => {
   const [isLoading, changeIsLoading] = useState(true);
   const [navigationFunctions, changeNavigationFunctions] = useState({});
   const [page, changePage] = useState(1);
@@ -26,9 +21,7 @@ const useCollection = (
     const fetchList = async () => {
       changeIsLoading(true);
       try {
-        const asyncHeadears = asyncHeadersHandler
-          ? await asyncHeadersHandler()
-          : {};
+        const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
         const response = await axios({
           method: "get",
           url: addPageParams({ collectionUrl, page, itemsPerPage }),
@@ -65,7 +58,7 @@ const useCollection = (
     };
 
     fetchList();
-  }, [collectionUrl,asyncHeadersHandler, headers, page, itemsPerPage]);
+  }, [collectionUrl, asyncHeadersHandler, headers, page, itemsPerPage]);
 
   return {
     isLoading,
@@ -77,13 +70,7 @@ const useCollection = (
   };
 };
 
-const HalTable = ({
-  colletionUrl,
-  asyncHeadersHandler,
-  headers,
-  columns,
-  itemsPerPage = 5
-}) => {
+const HalTable = ({ colletionUrl, asyncHeadersHandler, headers, columns, itemsPerPage = 5 }) => {
   const {
     isLoading,
     navigationFunctions,
@@ -97,14 +84,8 @@ const HalTable = ({
   const getCellInfo = (listItem, columnProperty) => {
     const propertyValue = listItem.summary[columnProperty.property];
     const propertyStringValue =
-      propertyValue === true
-        ? "Yes"
-        : propertyValue === false
-        ? "No"
-        : propertyValue;
-    return columnProperty.mapFunction
-      ? columnProperty.mapFunction(listItem)
-      : propertyStringValue;
+      propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
+    return columnProperty.mapFunction ? columnProperty.mapFunction(listItem) : propertyStringValue;
   };
 
   return (
@@ -144,9 +125,7 @@ const HalTable = ({
         </LoadingContainer>
       ) : (
         !error &&
-        !collectionItems.length && (
-          <EmptyTableRow>There are no items in this list.</EmptyTableRow>
-        )
+        !collectionItems.length && <EmptyTableRow>There are no items in this list.</EmptyTableRow>
       )}
       {!error && totalCollectionItems > 0 && (
         <DxcPaginator
