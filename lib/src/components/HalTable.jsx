@@ -9,7 +9,12 @@ const addPageParams = ({ collectionUrl, page, itemsPerPage }) => {
   }_start=${(page - 1) * itemsPerPage + 1}&_num=${itemsPerPage}`;
 };
 
-const useCollection = (collectionUrl, headers, itemsPerPage) => {
+const useCollection = (
+  collectionUrl,
+  asyncHeadersHandler,
+  headers = {},
+  itemsPerPage
+) => {
   const [isLoading, changeIsLoading] = useState(true);
   const [navigationFunctions, changeNavigationFunctions] = useState({});
   const [page, changePage] = useState(1);
@@ -21,10 +26,13 @@ const useCollection = (collectionUrl, headers, itemsPerPage) => {
     const fetchList = async () => {
       changeIsLoading(true);
       try {
+        const asyncHeadears = asyncHeadersHandler
+          ? await asyncHeadersHandler()
+          : {};
         const response = await axios({
           method: "get",
           url: addPageParams({ collectionUrl, page, itemsPerPage }),
-          headers: headers
+          headers: { ...headers, ...asyncHeadears }
         });
         const links = response.data?._links;
         changeIsLoading(false);
@@ -57,7 +65,7 @@ const useCollection = (collectionUrl, headers, itemsPerPage) => {
     };
 
     fetchList();
-  }, [collectionUrl, headers, page, itemsPerPage]);
+  }, [collectionUrl,asyncHeadersHandler, headers, page, itemsPerPage]);
 
   return {
     isLoading,
@@ -69,7 +77,13 @@ const useCollection = (collectionUrl, headers, itemsPerPage) => {
   };
 };
 
-const HalTable = ({ colletionUrl, headers, columns, itemsPerPage = 5 }) => {
+const HalTable = ({
+  colletionUrl,
+  asyncHeadersHandler,
+  headers,
+  columns,
+  itemsPerPage = 5
+}) => {
   const {
     isLoading,
     navigationFunctions,
@@ -77,7 +91,7 @@ const HalTable = ({ colletionUrl, headers, columns, itemsPerPage = 5 }) => {
     collectionItems,
     totalCollectionItems,
     error
-  } = useCollection(colletionUrl, headers, itemsPerPage);
+  } = useCollection(colletionUrl, asyncHeadersHandler, headers, itemsPerPage);
   const { next, previous, first, last } = navigationFunctions;
 
   const getCellInfo = (listItem, columnProperty) => {
