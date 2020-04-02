@@ -1,6 +1,6 @@
 
 # React HAL Components
-
+ 
 ## HAL Table Component
 
 | Name      | Type          | Default | Description                                                                                                                                        |
