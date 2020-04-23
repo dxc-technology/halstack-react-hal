@@ -22,14 +22,13 @@ The library provides the following components and hooks to be used in your React
 
 Components
 
-- [Table](#hal-table-component)
+- [HalTable](#haltable-component)
 
 Hooks
 
-- [Use HAL Resource](#use-hal-resource-hook)
-- [Use HAL Collection](#use-hal-collection-hook)
+- [useHalResource](#usehalresource-hook)
 
-### HAL Table Component
+### HalTable Component
 
 #### Hal Table Usage
 
@@ -101,7 +100,7 @@ The return value of this hook is an array with the following stateful variables.
 | resource: `HalResource`                                                                    | A Halstack Client's HalResource instance of the resource behind the `url` parameter.<ul><li> It will be `null` until the resource is fetched.</li><li> It will be automatically refreshed if the execution of an interaction handler responds with an instance of the same resource.</li></ul>                                                                                                                                                                                         |
 | requestStatus: `'idle'` \| `'fetching'` \| `'resolved'` \| `'rejected'` \| `'interaction'` | The status of the http request to the `url` parameter.<ul><li> `'idle'` before the request is triggered</li><li> `'fetching'` after the request is triggered and the before we get a response.</li><li> `'resolved'` after getting a successful response. Only if it contains a HAL resource.</li><li> `'rejected'` after getting an error response. Or if response doesn't contain a HAL resource.</li><li> `'interaction'` during the execution of an interaction handler.</li></ul> |
 | requestError: `string`                                                                     | The error message in case the request gets rejected. It will be `null` before getting the response or if the response is successful and contains a HAL resource.                                                                                                                                                                                                                                                                                                                                                               |
-| resourceInteractions: `string`                                                                     | This is an object containing as many entries as interactions (_options.links) are available in the HAL resource. Each entry has the rel of the interaction as a key, and is a function that you can execute passing a payload as a parameter. Executing one of these functions will: <ul><li>Make the http request associated to the given interaction.</li><li>Change the `requestStatus` to `interaction`, and then back to `resolved` (even when the request fails).</li><li>Update the `resource` if the request responds with a new representation of the same resource.</li><li>Return a promise, so that you can handle the resolution or rejection manually.</li></ul>                                                                                                                                                                                                                                                                                                                                                           |
+| resourceInteractions: `string`                                                                     | This is an object containing as many entries as interactions (_options.links) are available in the HAL resource. Each entry has the rel of the interaction as a key, and is a function that you can execute passing a payload as a parameter. Executing one of these functions will: <ul><li>Make the http request associated to the given interaction.</li><li>Change the `requestStatus` to `'interaction'`, and then back to `'resolved'` (even when the request fails).</li><li>Update the `resource` if the request responds with a new representation of the same resource.</li><li>Return a promise, so that you can handle the resolution or rejection manually.</li></ul>                                                                                                                                                                                                                                                                                                                                                           |
 
 #### useHalResource example
 
@@ -123,13 +122,10 @@ export default () => {
 };
 ```
 
-### Use HAL Collection Hook
-
-ToDo: useHalCollection Docs
 
 ## Contributing
 
-Before opening new issues or pull requests, please refer to [CONTRIBUTING.MD](https://github.dxc.com/DIaaS/diaas-react-cdk/blob/master/CONTRIBUTING.md).
+Before opening new issues or pull requests, please refer to [CONTRIBUTING.MD](https://github.dxc.com/DIaaS/diaas-react-hal-components/blob/master/CONTRIBUTING.md).
 
 ## Development Setup
 
