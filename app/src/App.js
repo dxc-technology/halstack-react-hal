@@ -2,43 +2,35 @@ import React, { useState, useEffect } from "react";
 import { HalTable, useHalResource } from "@diaas/diaas-react-hal-components";
 
 export default () => {
-  const [user, userStatus, userError, userHandlers] = useHalResource({
-    url:
-      "https://bgqrqjl2t2.execute-api.us-west-1.amazonaws.com/dev/realms/us-east-1_wCPANetpN/users/asdasdasd"
-  });
-
   return (
     <div>
-      <div>{userStatus}</div>
       <HalTable
-        colletionUrl={
-          "https://bgqrqjl2t2.execute-api.us-west-1.amazonaws.com/dev/realms/us-east-1_wCPANetpN/users"
+        collectionUrl={
+          "https://api.dxc-dev-integral.hub-1.dev.us.insurance.dxc.com/prospects"
         }
         columns={[
           {
-            header: "Username",
-            property: "username"
+            header: "Name",
+            displayProperty: "prospect-last-name",
+            sortProperty: "prospect-last-name",
           },
           {
-            header: "Status",
-            property: "status"
+            header: "Email",
+            displayProperty: "prospect-email",
+            sortProperty: "prospect-create-user",
           },
           {
-            header: "Enabled",
-            property: "enabled"
+            header: "Client Number",
+            displayProperty: "prospect-client-number"
           },
           {
-            header: "Created",
-            property: "created_date"
+            header: "Start date",
+            displayProperty: "prospect-start-date",
+            sortProperty: "prospect-start-date",
           },
-          {
-            header: "Updated",
-            property: "last_modified_date"
-          }
         ]}
-      >
-        {userStatus}
-      </HalTable>
+        headers={{ "x-api-key": "LP1kUdtWt94cgG6EAmJBB9NwqZI8nKNC3CID42EA" }}
+      ></HalTable>
     </div>
   );
 };

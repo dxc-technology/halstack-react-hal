@@ -15,7 +15,8 @@
   "dependencies": {
     "@diaas/dxc-react-cdk": "0.0.0-alpha.256",
     "@dxc-technology/halstack-client": "^1.1.5",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-scripts": "^3.4.1"
   },
   "scripts": {
     "test": "jest",
