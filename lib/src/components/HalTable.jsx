@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { DxcSpinner, DxcTable, DxcPaginator } from "@diaas/dxc-react-cdk";
 import axios from "axios";
 import styled from "styled-components";
+import arrowUp from "./arrow_upward-24px_wht.svg";
+import arrowDown from "./arrow_downward-24px_wht.svg";
+import bothArrows from "./unfold_more-24px_wht.svg";
 
-const addPageParams = ({ collectionUrl, page, itemsPerPage }) => {
-  return `${collectionUrl}${collectionUrl.includes("?") ? "&" : "?"}_start=${(page - 1) *
-    itemsPerPage +
-    1}&_num=${itemsPerPage}`;
+const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn }) => {
+  return `${collectionUrl}${collectionUrl.includes("?") ? "&" : "?"}_start=${
+    (page - 1) * itemsPerPage + 1
+  }&_num=${itemsPerPage}${sortColumn ? `&_sort=${sortColumn}` : ``}`;
 };
 
 const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPerPage) => {
@@ -16,6 +19,7 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
   const [error, changeError] = useState(null);
   const [collectionItems, changeCollectionItems] = useState([]);
   const [totalCollectionItems, changeTotalCollectionItems] = useState(null);
+  const [sortColumn, changeSortColumn] = useState("");
 
   useEffect(() => {
     const fetchList = async () => {
@@ -24,8 +28,8 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
         const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
         const response = await axios({
           method: "get",
-          url: addPageParams({ collectionUrl, page, itemsPerPage }),
-          headers: { ...headers, ...asyncHeadears }
+          url: addPageParams({ collectionUrl, page, itemsPerPage, sortColumn }),
+          headers: { ...headers, ...asyncHeadears },
         });
         const links = response.data?._links;
         changeIsLoading(false);
@@ -40,9 +44,13 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
           first: () => {
             changePage(1);
           },
-          last: page => {
+          last: (page) => {
             changePage(page);
-          }
+          },
+          sort: (column) => {
+            changePage(1);
+            changeSortColumn(column);
+          },
         });
         var result = links?.item || [];
         // if item is an object convert to an array.
@@ -58,7 +66,7 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
     };
 
     fetchList();
-  }, [collectionUrl, asyncHeadersHandler, headers, page, itemsPerPage]);
+  }, [collectionUrl, asyncHeadersHandler, headers, page, itemsPerPage, sortColumn]);
 
   return {
     isLoading,
@@ -66,42 +74,65 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
     page,
     collectionItems,
     totalCollectionItems,
-    error
+    error,
+    sortColumn,
   };
 };
 
-const HalTable = ({ colletionUrl, asyncHeadersHandler, headers, columns, itemsPerPage = 5 }) => {
+const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsPerPage = 5 }) => {
   const {
     isLoading,
     navigationFunctions,
     page,
     collectionItems,
     totalCollectionItems,
-    error
-  } = useCollection(colletionUrl, asyncHeadersHandler, headers, itemsPerPage);
-  const { next, previous, first, last } = navigationFunctions;
+    error,
+    sortColumn,
+  } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage);
+  const { next, previous, first, last, sort } = navigationFunctions;
 
   const getCellInfo = (listItem, columnProperty) => {
-    const propertyValue = listItem.summary[columnProperty.property];
+    const propertyValue = listItem.summary[columnProperty.displayProperty];
     const propertyStringValue =
       propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
     return columnProperty.mapFunction ? columnProperty.mapFunction(listItem) : propertyStringValue;
+  };
+
+  const sortByColumn = (property) => {
+    if (property) {
+      return property === sortColumn ? sort(`-${property}`) : sort(property);
+    }
+  };
+
+  const getIconForSortableColumn = (property) => {
+    return property === sortColumn
+      ? arrowUp
+      : `-${property}` === sortColumn
+      ? arrowDown
+      : bothArrows;
   };
 
   return (
     <DxcHALTableContainer>
       <DxcTable>
         <HeaderRow>
-          {columns.map(column => (
-            <th>{column.header}</th>
+          {columns.map((column) => (
+            <TableHeader>
+              <HeaderContainer onClick={() => sortByColumn(column.sortProperty)}>
+                <TitleDiv isSortable={column.sortProperty}>{column.header}</TitleDiv>
+                {column.sortProperty && (
+                  <SortIcon src={getIconForSortableColumn(column.sortProperty)} />
+                )}
+              </HeaderContainer>
+            </TableHeader>
           ))}
         </HeaderRow>
         <TableRowGroup>
           {!isLoading &&
             collectionItems.length > 0 &&
-            collectionItems.map(collectionItem => (
+            collectionItems.map((collectionItem) => (
               <tr>
-                {columns.map(columnProperty => (
+                {columns.map((columnProperty) => (
                   <td>
                     {(columnProperty.onClickItemFunction && (
                       <LinkRow
@@ -142,6 +173,21 @@ const HalTable = ({ colletionUrl, asyncHeadersHandler, headers, columns, itemsPe
     </DxcHALTableContainer>
   );
 };
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+`;
+const TitleDiv = styled.div`
+  cursor: ${(props) => (props.isSortable && "pointer") || "default"};
+`;
+const SortIcon = styled.img`
+  top: 409px;
+  left: 390px;
+  height: 14px;
+  cursor: pointer;
+`;
+const TableHeader = styled.th``;
 
 const LinkRow = styled.a`
   text-decoration: none;
