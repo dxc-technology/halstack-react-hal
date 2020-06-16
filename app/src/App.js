@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { HalTable, useHalResource } from "@diaas/diaas-react-hal-components";
+import { HalTable, HalAutocomplete } from "@diaas/diaas-react-hal-components";
 
 export default () => {
+  const [autocompleteValue, changeAutocompleteValue] = useState("");
+  const onChange = (newValue) => {
+    changeAutocompleteValue(newValue);
+  };
+
   return (
+    <div>
     <div>
       <HalTable
         collectionUrl={
@@ -21,7 +27,7 @@ export default () => {
           },
           {
             header: "Client Number",
-            displayProperty: "prospect-client-number"
+            displayProperty: "prospect-client-number",
           },
           {
             header: "Start date",
@@ -31,6 +37,17 @@ export default () => {
         ]}
         headers={{ "x-api-key": "LP1kUdtWt94cgG6EAmJBB9NwqZI8nKNC3CID42EA" }}
       ></HalTable>
+    </div>
+    <div>
+      <HalAutocomplete
+        url="https://api.dxc-dev-integral.hub-1.dev.us.insurance.dxc.com/prospects"
+        propertyName="prospect-full-name"
+        label="Autocomplete label"
+        onChange={onChange}
+        value={autocompleteValue}
+        headers={{ "x-api-key": "LP1kUdtWt94cgG6EAmJBB9NwqZI8nKNC3CID42EA" }}
+      ></HalAutocomplete>
+    </div>
     </div>
   );
 };

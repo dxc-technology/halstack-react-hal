@@ -23,6 +23,7 @@ The library provides the following components and hooks to be used in your React
 Components
 
 - [HalTable](#haltable-component)
+- [HalAutocomplete](#halautocomplete-component)
 
 Hooks
 
@@ -74,6 +75,53 @@ export default () => {
     ></HalTable>
   );
 };
+
+```
+
+### HalAutocomplete Component
+
+#### Hal Autocomplete Usage
+
+```JSX
+import { HalAutocomplete } from "@diaas/diaas-react-hal-components";
+```
+
+#### Hal Autocomplete Props
+
+| Name                                    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| :-------------------------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| url: `string`                  |         | The URL of the collection  resource to be used for the table. `Required`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| headers: `Object`                       |         | Contains the http headers to be sent along with the http requests to the collectionUrl. `Optional`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| asyncHeadersHandler: `()=>Promise<obj>` |         | Async function that will be executed right before every http request in order to retrieve dynamic headers. It must return a promise that resolves into an object with the keys and values of the headers. These headers will be merged with the ones indicated in the `headers` prop.`Optional`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| propertyName: `string` |         | Name of the property to be used for filtering the data                                                                                                                                                                                                                                                                                                                                             |
+In addition to these component-specific properties you will also have all the properties of the Text field component that can be found on [its site](http://design-system-react-cdk-site.s3-website-us-east-1.amazonaws.com/#/components/input)
+
+#### HalAutocomplete Component Example
+
+```JSX
+import React, { useState, useEffect } from "react";
+import {HalAutocomplete} from "@diaas/diaas-react-hal-components";
+
+export default () => {
+  const [autocompleteValue, changeAutocompleteValue] = useState("")
+  const onChange = (newValue) => {
+    changeAutocompleteValue(newValue);
+  };
+
+  return (
+    <div>
+      
+      <HalAutocomplete
+        url="https://..."
+        propertyName="full-name"
+        label="Full Name"
+        onChange={onChange}
+        value={autocompleteValue}
+      ></HalAutocomplete>
+    </div>
+  );
+};
+
 ```
 
 ### useHalResource Hook
