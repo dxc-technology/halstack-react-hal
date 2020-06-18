@@ -57,7 +57,7 @@ pipeline {
         stage('Publish diaas-react-hal-components alpha version to Artifactory ') {
             when { branch 'master' }
             steps {                
-                sh "sed -i -e 's/${OLD_RELEASE_NUMBER}/'${OLD_RELEASE_NUMBER}-alpha.${BUILD_ID}'/g' ./lib/package.json"
+                sh "sed -i 's#\"version\": ${OLD_RELEASE_NUMBER}#\"version\": ${OLD_RELEASE_NUMBER}-alpha.${BUILD_ID}#' ./lib/package.json"
                 sh '''
                     cd lib
                     npm publish --registry https://artifactory.csc.com/artifactory/api/npm/diaas-npm-local/ --tag alpha
