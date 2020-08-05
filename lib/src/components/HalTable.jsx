@@ -33,7 +33,9 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPe
         });
         const links = response.data?._links;
         changeIsLoading(false);
-        changeTotalCollectionItems(response.data?._count);
+        changeTotalCollectionItems(
+          response.data?._count || response.data?._links?._count || undefined
+        );
         changeNavigationFunctions({
           next: () => {
             changePage(page + 1);
