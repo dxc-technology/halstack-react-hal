@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { HalTable, HalAutocomplete } from "@diaas/diaas-react-hal-components";
+import { HalTable, HalAutocomplete } from "@dxc-technology/halstack-react-hal";
 
 export default () => {
   return (
