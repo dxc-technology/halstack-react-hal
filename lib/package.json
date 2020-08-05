@@ -2,6 +2,7 @@
   "name": "@dxc-technology/halstack-react-hal",
   "version": "0.0.0",
   "description": "DXC Halstack React components library for HAL APIs",
+  "repository": "dxc-technology/halstack-react-hal",
   "author": {
     "name": "DXC Technology",
     "email": "DigitalInsurance@dxc.com",
