@@ -1,21 +1,21 @@
-# Halstack React HAL Components
+# Halstack React HAL
 
-Assure HAL React Components is an npm library of reusable React components. It brings together two different responsibilities:
+Halstack React HAL is an npm library of reusable React components. It brings together two different responsibilities:
 
 - Consuming HAL REST APIs implemented following the [DXC API Guidelines](https://developer.dxc.com/apis).
 
 - Rendering these API resources as UI components that are compliant with the [DXC UX Guidelines](https://developer.dxc.com/design/principles).
 
-We have other libraries that will help you handling these responsibilities individually ([Halstack Client](https://github.com/dxc-technology/dxc-halstack-client) / [Assure React CDK](https://github.dxc.com/DIaaS/diaas-react-cdk)). Assure HAL React Components uses them under the hood, but it's a higher level abstraction that puts both responsibilities together using the most common association patterns.
+We have other libraries that will help you handling these responsibilities individually ([Halstack Client](https://github.com/dxc-technology/dxc-halstack-client) / [Halstack React](https://github.com/dxc-technology/dxc-halstack-client)). Halstack React HAL uses them under the hood, but it is a higher level abstraction that puts both responsibilities together using the most common association patterns.
 
 For example, collection resources are often associated with tables, and there are a lot of semantics in the standards described by the DXC API guidelines for collections (sorting, paginating...) that could be associated with UI interactions (clicking a table header for sorting, clicking pages for paginating)
 
 ## Usage
 
-Assure HAL React Components is distributed as an npm library. In order to use it in an existing project, you must install it first:
+Halstack React HAL is distributed as an npm library. In order to use it in an existing project, you must install it first. You also need to install styled-styled components, which is a peer dependency.
 
 ```bash
-npm install @diaas/diaas-react-hal-components
+npm install @dxc-technology/halstack-react-hal styled-components
 ```
 
 The library provides the following components and hooks to be used in your React application:
@@ -34,7 +34,7 @@ Hooks
 #### Hal Table Usage
 
 ```JSX
-import { HalTable } from "@diaas/diaas-react-hal-components";
+import { HalTable } from "@dxc-technology/halstack-react-hal";
 ```
 
 #### Hal Table Props
@@ -51,7 +51,7 @@ import { HalTable } from "@diaas/diaas-react-hal-components";
 
 ```JSX
 import React from "react";
-import { HalTable } from "@diaas/diaas-react-hal-components";
+import { HalTable } from "@dxc-technology/halstack-react-hal";
 
 export default () => {
   return (
@@ -83,7 +83,7 @@ export default () => {
 #### Hal Autocomplete Usage
 
 ```JSX
-import { HalAutocomplete } from "@diaas/diaas-react-hal-components";
+import { HalAutocomplete } from "@dxc-technology/halstack-react-hal";
 ```
 
 #### Hal Autocomplete Props
@@ -100,7 +100,7 @@ In addition to these component-specific properties you will also have all the pr
 
 ```JSX
 import React, { useState, useEffect } from "react";
-import {HalAutocomplete} from "@diaas/diaas-react-hal-components";
+import {HalAutocomplete} from "@dxc-technology/halstack-react-hal";
 
 export default () => {
   const [autocompleteValue, changeAutocompleteValue] = useState("")
@@ -129,7 +129,7 @@ export default () => {
 #### useHalResource Usage
 
 ```JSX
-import { useHalResource } from "@diaas/diaas-react-hal-components";
+import { useHalResource } from "@dxc-technology/halstack-react-hal";
 ```
 
 #### useHalResource Parameters
@@ -155,7 +155,7 @@ The return value of this hook is an array with the following stateful variables.
 
 ```JSX
 import React from "react";
-import { useHalResource } from "@diaas/diaas-react-hal-components";
+import { useHalResource } from "@dxc-technology/halstack-react-hal";
 
 export default () => {
   const [
@@ -174,7 +174,7 @@ export default () => {
 
 ## Contributing
 
-Before opening new issues or pull requests, please refer to [CONTRIBUTING.MD](https://github.dxc.com/DIaaS/diaas-react-hal-components/blob/master/CONTRIBUTING.md).
+Before opening new issues or pull requests, please refer to [CONTRIBUTING.MD](https://github.com/dxc-technology/halstack-react-hal/blob/master/CONTRIBUTING.md).
 
 ## Development Setup
 
