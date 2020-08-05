@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { DxcInput } from "@dxc-technology/halstack-react-hal";
+import { DxcInput } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 
 import styled from "styled-components";

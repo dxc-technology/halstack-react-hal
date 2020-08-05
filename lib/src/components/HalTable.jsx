@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DxcSpinner, DxcTable, DxcPaginator } from "@dxc-technology/halstack-react-hal";
+import { DxcSpinner, DxcTable, DxcPaginator } from "@dxc-technology/halstack-react";
 import axios from "axios";
 import styled from "styled-components";
 import arrowUp from "./arrow_upward-24px_wht.svg";
