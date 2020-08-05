@@ -1,19 +1,20 @@
 {
-  "name": "@diaas/diaas-react-hal-components",
+  "name": "@dxc-technology/halstack-react-hal",
   "version": "0.0.0",
-  "description": "DIaaS HAL Components for React",
+  "description": "DXC Halstack React components library for HAL APIs",
   "author": {
     "name": "DXC Technology",
     "email": "DigitalInsurance@dxc.com",
     "url": "https://dxc.com"
   },
   "main": "./dist/main.js",
+  "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "dependencies": {
-    "@diaas/dxc-react-cdk": "0.0.0-alpha.301",
+    "@dxc-technology/halstack-react": "0.0.2",
     "@dxc-technology/halstack-client": "^1.1.5",
     "prop-types": "^15.7.2",
     "react-scripts": "^3.4.1"
