@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@dxc-technology/halstack-react": "0.0.2",
-    "@dxc-technology/halstack-client": "^1.1.5",
+    "@dxc-technology/halstack-client": "1.2.1",
     "prop-types": "^15.7.2",
     "react-scripts": "^3.4.1"
   },
