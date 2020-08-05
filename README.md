@@ -1,4 +1,4 @@
-# Assure HAL React Components
+# Halstack React HAL Components
 
 Assure HAL React Components is an npm library of reusable React components. It brings together two different responsibilities:
 
