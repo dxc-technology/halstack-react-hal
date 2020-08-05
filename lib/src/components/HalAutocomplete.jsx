@@ -21,10 +21,13 @@ const HalAutocomplete = ({
     const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
     const response = await HalApiCaller.get({
       url: addFilterParams(url, value, propertyName),
-      headers: { ...headers, ...asyncHeadears }
+      headers: { ...headers, ...asyncHeadears },
     });
     return response?.halResource?.getItems()
-      ? response.halResource.getItems().map((item) => item.summary[propertyName])
+      ? response.halResource
+          .getItems()
+          .filter((item) => item?.summary?.[propertyName])
+          .map((item) => item.summary[propertyName])
       : [];
   }, [propertyName, url, value]);
 
