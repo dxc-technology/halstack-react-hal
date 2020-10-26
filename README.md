@@ -1,4 +1,4 @@
-# Halstack React HAL 
+# Halstack React HAL  
 
 Halstack React HAL is an npm library of reusable React components. It brings together two different responsibilities:
 
