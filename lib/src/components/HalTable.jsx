@@ -12,7 +12,7 @@ const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn }) => {
   }&_num=${itemsPerPage}${sortColumn ? `&_sort=${sortColumn}` : ``}`;
 };
 
-const useCollection = (collectionUrl, asyncHeadersHandler, headers = {}, itemsPerPage) => {
+const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage) => {
   const [isLoading, changeIsLoading] = useState(true);
   const [navigationFunctions, changeNavigationFunctions] = useState({});
   const [page, changePage] = useState(1);
