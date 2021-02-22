@@ -65,11 +65,11 @@ export default () => {
         },
         {
           header: "Status",
-          property: "status",
+          displayProperty: "status",
         },
         {
           header: "Enabled",
-          property: "enabled",
+          displayProperty: "enabled",
         },
       ]}
     ></HalTable>
