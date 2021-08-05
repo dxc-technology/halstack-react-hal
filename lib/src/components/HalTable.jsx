@@ -37,17 +37,8 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
           response.data?._count || response.data?._links?._count || undefined
         );
         changeNavigationFunctions({
-          next: () => {
-            changePage(page + 1);
-          },
-          previous: () => {
-            changePage(page - 1);
-          },
-          first: () => {
-            changePage(1);
-          },
-          last: (page) => {
-            changePage(page);
+          onPageChange: (newPage) => {
+            changePage(newPage);
           },
           sort: (column) => {
             changePage(1);
@@ -91,7 +82,7 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
     error,
     sortColumn,
   } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage);
-  const { next, previous, first, last, sort } = navigationFunctions;
+  const { onPageChange, sort } = navigationFunctions;
 
   const getCellInfo = (listItem, columnProperty) => {
     const propertyValue = listItem.summary[columnProperty.displayProperty];
@@ -165,10 +156,8 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
           totalItems={totalCollectionItems}
           itemsPerPage={itemsPerPage}
           currentPage={page}
-          nextFunction={next}
-          prevFunction={previous}
-          firstFunction={first}
-          lastFunction={last}
+          showGoToPage={true}
+          onPageChange={onPageChange}
         />
       )}
       {error && <ErrorContainer>{error}</ErrorContainer>}
