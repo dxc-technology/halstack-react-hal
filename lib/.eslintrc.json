@@ -13,6 +13,7 @@
     "import/extensions": "allow",
     "import/no-unresolved": ["error", { "ignore": ["react", "styled-components"] }],
     "react/prop-types": [2, { "ignore": ["children"] }],
-    "react/self-closing-comp": "allow"
+    "react/self-closing-comp": "allow",
+    "no-throw-literal": "off"
   }
 }
