@@ -103,7 +103,7 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
   };
 
   return (
-    <DxcHALTableContainer>
+    <HalTableContainer>
       <DxcTable>
         <HeaderRow>
           <tr>
@@ -162,7 +162,7 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
         />
       )}
       {error && <MessageContainer error>{error}</MessageContainer>}
-    </DxcHALTableContainer>
+    </HalTableContainer>
   );
 };
 const HeaderContainer = styled.div`
@@ -205,7 +205,7 @@ const MessageContainer = styled.div`
   color: ${({ error }) => (error ? "#cb4242" : "#888888")};
 `;
 
-const DxcHALTableContainer = styled.div`
+const HalTableContainer = styled.div`
   > table:nth-child(1) {
     width: 100%;
     position: relative;
