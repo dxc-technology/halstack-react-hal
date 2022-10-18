@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DxcSpinner, DxcTable, DxcPaginator } from "@dxc-technology/halstack-react";
-import axios from "axios";
+import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
 import arrowUp from "./arrow_upward-24px_wht.svg";
 import arrowDown from "./arrow_downward-24px_wht.svg";
@@ -26,15 +26,13 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
       changeIsLoading(true);
       try {
         const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
-        const response = await axios({
-          method: "get",
+        const response = await HalApiCaller.get({
           url: addPageParams({ collectionUrl, page, itemsPerPage, sortColumn }),
           headers: { ...headers, ...asyncHeadears },
         });
-        const links = response.data?._links;
         changeIsLoading(false);
         changeTotalCollectionItems(
-          response.data?._count || response.data?._links?._count || undefined
+          response.body?._count || response.body?._links?._count || undefined
         );
         changeNavigationFunctions({
           onPageChange: (newPage) => {
@@ -45,13 +43,12 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
             changeSortColumn(column);
           },
         });
-        var result = links?.item || [];
+        const result = response?.halResource?.getItems();
         // if item is an object convert to an array.
         if (!Array.isArray(result)) {
           result = [result];
         }
         changeCollectionItems(result);
-        // changeCollectionItems(links?.item || []);
       } catch (err) {
         changeIsLoading(false);
         changeError("Error fetching table data.");
@@ -106,27 +103,29 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
   };
 
   return (
-    <DxcHALTableContainer>
+    <HalTableContainer>
       <DxcTable>
         <HeaderRow>
-          {columns.map((column) => (
-            <TableHeader>
-              <HeaderContainer onClick={() => sortByColumn(column.sortProperty)}>
-                <TitleDiv isSortable={column.sortProperty}>{column.header}</TitleDiv>
-                {column.sortProperty && (
-                  <SortIcon src={getIconForSortableColumn(column.sortProperty)} />
-                )}
-              </HeaderContainer>
-            </TableHeader>
-          ))}
+          <tr>
+            {columns.map((column) => (
+              <TableHeader key={`th-${column.header}`}>
+                <HeaderContainer onClick={() => sortByColumn(column.sortProperty)}>
+                  <TitleDiv isSortable={column.sortProperty}>{column.header}</TitleDiv>
+                  {column.sortProperty && (
+                    <SortIcon src={getIconForSortableColumn(column.sortProperty)} />
+                  )}
+                </HeaderContainer>
+              </TableHeader>
+            ))}
+          </tr>
         </HeaderRow>
         <TableRowGroup>
           {!isLoading &&
             collectionItems.length > 0 &&
-            collectionItems.map((collectionItem) => (
-              <tr>
+            collectionItems.map((collectionItem, i) => (
+              <tr key={`tr-${i}`}>
                 {columns.map((columnProperty) => (
-                  <td>
+                  <td key={`tr-${i}-${columnProperty.displayProperty}`}>
                     {(columnProperty.onClickItemFunction && (
                       <LinkRow
                         onClick={() => {
@@ -149,7 +148,9 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
         </LoadingContainer>
       ) : (
         !error &&
-        !collectionItems.length && <EmptyTableRow>There are no items in this list.</EmptyTableRow>
+        !collectionItems.length && (
+          <MessageContainer>There are no items in this list.</MessageContainer>
+        )
       )}
       {!error && totalCollectionItems > 0 && (
         <DxcPaginator
@@ -160,8 +161,8 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
           onPageChange={onPageChange}
         />
       )}
-      {error && <ErrorContainer>{error}</ErrorContainer>}
-    </DxcHALTableContainer>
+      {error && <MessageContainer error>{error}</MessageContainer>}
+    </HalTableContainer>
   );
 };
 const HeaderContainer = styled.div`
@@ -169,15 +170,18 @@ const HeaderContainer = styled.div`
   align-items: center;
   width: fit-content;
 `;
+
 const TitleDiv = styled.div`
   cursor: ${(props) => (props.isSortable && "pointer") || "default"};
 `;
+
 const SortIcon = styled.img`
   top: 409px;
   left: 390px;
   height: 14px;
   cursor: pointer;
 `;
+
 const TableHeader = styled.th``;
 
 const LinkRow = styled.a`
@@ -191,23 +195,23 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
-const ErrorContainer = styled.div`
+const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff4f4;
-  text-transform: uppercase;
-  color: #cb4242;
   padding: 50px;
   margin-top: 10px;
+  background: ${({ error }) => (error ? "#fff4f4" : "#f8f8f8")};
+  color: ${({ error }) => (error ? "#cb4242" : "#888888")};
 `;
 
-const DxcHALTableContainer = styled.div`
+const HalTableContainer = styled.div`
   > table:nth-child(1) {
     width: 100%;
     position: relative;
   }
 `;
+
 const TableRowGroup = styled.tbody`
   > div:nth-child(1) {
     position: absolute;
@@ -215,18 +219,9 @@ const TableRowGroup = styled.tbody`
     bottom: calc(50% - 68.5px - 30px);
   }
 `;
+
 const HeaderRow = styled.thead`
   height: 60px;
-`;
-const EmptyTableRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f8f8f8;
-  text-transform: uppercase;
-  color: #888888;
-  padding: 50px;
-  margin-top: 10px;
 `;
 
 export default HalTable;

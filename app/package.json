@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dxc-technology/halstack-react": "^6.1.0",
     "@dxc-technology/halstack-react-hal": "file:../lib",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-scripts": "^3.4.1",
     "styled-components": "^5.0.1"
   },
