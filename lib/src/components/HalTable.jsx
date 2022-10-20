@@ -109,7 +109,11 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
           <tr>
             {columns.map((column) => (
               <TableHeader key={`th-${column.header}`}>
-                <HeaderContainer onClick={() => sortByColumn(column.sortProperty)}>
+                <HeaderContainer
+                  onClick={() => sortByColumn(column.sortProperty)}
+                  tabIndex={column.sortProperty ? 0 : -1}
+                  isSortable={column.sortProperty}
+                >
                   <TitleDiv isSortable={column.sortProperty}>{column.header}</TitleDiv>
                   {column.sortProperty && (
                     <SortIcon src={getIconForSortableColumn(column.sortProperty)} />
@@ -123,7 +127,7 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
           {!isLoading &&
             collectionItems.length > 0 &&
             collectionItems.map((collectionItem, i) => (
-              <tr key={`tr-${i}`}>
+              <TableRow key={`tr-${i}`}>
                 {columns.map((columnProperty) => (
                   <td key={`tr-${i}-${columnProperty.displayProperty}`}>
                     {(columnProperty.onClickItemFunction && (
@@ -138,7 +142,7 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
                       getCellInfo(collectionItem, columnProperty)}
                   </td>
                 ))}
-              </tr>
+              </TableRow>
             ))}
         </TableRowGroup>
       </DxcTable>
@@ -168,7 +172,14 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
 const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   width: fit-content;
+  :focus {
+    ${(props) =>
+      props.isSortable &&
+      `outline: #0095ff solid 2px; 
+        outline-offset: 4px;`}
+  }
 `;
 
 const TitleDiv = styled.div`
@@ -218,6 +229,10 @@ const TableRowGroup = styled.tbody`
     left: calc(50% - 68.5px);
     bottom: calc(50% - 68.5px - 30px);
   }
+`;
+
+const TableRow = styled.tr`
+  height: 60px;
 `;
 
 const HeaderRow = styled.thead`
