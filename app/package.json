@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dxc-technology/halstack-react": "^6.1.0",
+    "@dxc-technology/halstack-react": "8.0.0",
     "@dxc-technology/halstack-react-hal": "file:../lib",
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.13.0",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.1",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
