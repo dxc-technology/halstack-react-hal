@@ -4,7 +4,6 @@ import {
   DxcTable,
   DxcPaginator,
   DxcFlex,
-  DxcParagraph,
   DxcTypography,
 } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";

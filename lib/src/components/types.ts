@@ -17,12 +17,12 @@ type Column = {
    * Callback function that will be executed when the user clicks an item in that column. 
    * The collection item will be passed to this function when executed.
    */
-  onClickItemFunction?: (item: object) => void;
+  onClickItemFunction?: (item: any) => void;
   /**
    * Callback function that must return the value to be rendered in that column for a specific item. 
    * The item will be passed to this function as a parameter.
    */
-  mapFunction?: (item: object) => string;
+  mapFunction?: (item: any) => string;
 };
 
 export type HalTableProps = {

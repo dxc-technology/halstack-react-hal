@@ -40,7 +40,7 @@ const App = () => (
           <DxcFlex direction="column" gap="2rem">
             <DxcHeading level={2} text="HalAutocomplete example" />
             <HalAutocomplete
-              url="http://your-api/users"
+              collectionUrl="http://your-api/users"
               propertyName="username"
               label="Username"
             />

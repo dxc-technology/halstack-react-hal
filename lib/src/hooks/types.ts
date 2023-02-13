@@ -29,6 +29,7 @@ export type RequestStatus = "idle" | "fetching" | "resolved" | "rejected" | "int
  *    - resource: HalResource
  *    - requestStatus: 'idle' | 'fetching' | 'resolved' | 'rejected' | 'interaction'
  *    - requestError: ErrorResponse
- *    - resourceInteractions: object
+ *    - resourceInteractions: object. This is an object containing as many entries as interactions (_options.links) are available in the HAL resource. 
+ *      Each entry has the rel value of the interaction as a key, and a function that you can execute passing a payload as a parameter.
  */
-export type UseHalResourceResponse = [object, RequestStatus, ErrorResponse, object];
+export type UseHalResourceResponse = [any, RequestStatus, ErrorResponse, any];
