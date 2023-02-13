@@ -28,7 +28,7 @@ export type RequestStatus = "idle" | "fetching" | "resolved" | "rejected" | "int
  * Array with the following stateful variables.
  *    - resource: HalResource
  *    - requestStatus: 'idle' | 'fetching' | 'resolved' | 'rejected' | 'interaction'
- *    - requestError: string
- *    - resourceInteractions: Object
+ *    - requestError: ErrorResponse
+ *    - resourceInteractions: object
  */
-export type UseHalResourceResponse = [any, RequestStatus, ErrorResponse, object];
+export type UseHalResourceResponse = [object, RequestStatus, ErrorResponse, object];

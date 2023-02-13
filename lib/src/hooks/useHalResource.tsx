@@ -21,8 +21,8 @@ const useHalResource = ({
 }: UseHalResource): UseHalResourceResponse => {
   const [status, setStatus] = useState<RequestStatus>("idle");
   const [error, setError] = useState<ErrorResponse>();
-  const [resource, setResource] = useState(null);
-  const [interactions, setInteractions] = useState(null);
+  const [resource, setResource] = useState<object>(null);
+  const [interactions, setInteractions] = useState<object>(null);
 
   useEffect(() => {
     const getInteractionHandler = (method, resourceSelf, methodHref) => {

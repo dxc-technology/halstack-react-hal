@@ -7,7 +7,7 @@ const addFilterParams = (url: string, value: string, propertyName: string) =>
   `${url}${url.includes("?") ? "&" : "?"}${propertyName}=${value}`;
 
 const HalAutocomplete = ({
-  url,
+  collectionUrl,
   headers,
   asyncHeadersHandler,
   propertyName,
@@ -17,7 +17,7 @@ const HalAutocomplete = ({
     async (value: string): Promise<string[]> => {
       const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
       const response = await HalApiCaller.get({
-        url: value ? addFilterParams(url, value, propertyName) : url,
+        url: value ? addFilterParams(collectionUrl, value, propertyName) : collectionUrl,
         headers: { ...headers, ...asyncHeadears },
       });
 
@@ -25,7 +25,7 @@ const HalAutocomplete = ({
         ? response.halResource.getItems().map((item) => item.summary[propertyName])
         : [];
     },
-    [propertyName, url, asyncHeadersHandler, headers]
+    [propertyName, collectionUrl, asyncHeadersHandler, headers]
   );
 
   return <DxcTextInput {...childProps} suggestions={getSuggestionsFromAPI} />;

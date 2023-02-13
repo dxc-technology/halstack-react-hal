@@ -17,12 +17,12 @@ type Column = {
    * Callback function that will be executed when the user clicks an item in that column. 
    * The collection item will be passed to this function when executed.
    */
-  onClickItemFunction?: (item: any) => void;
+  onClickItemFunction?: (item: object) => void;
   /**
    * Callback function that must return the value to be rendered in that column for a specific item. 
    * The item will be passed to this function as a parameter.
    */
-  mapFunction?: (item: any) => string;
+  mapFunction?: (item: object) => string;
 };
 
 export type HalTableProps = {
@@ -55,7 +55,7 @@ export type HalAutocompleteProps = React.ComponentProps<typeof DxcTextInput> & {
   /**
    * The URL of the collection resource to be used for the table.
    */
-  url: string;
+  collectionUrl: string;
   /**
    * Contains the HTTP headers to be sent along with the HTTP requests to the collectionUrl.
    */
