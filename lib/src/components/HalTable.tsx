@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { DxcSpinner, DxcTable, DxcPaginator } from "@dxc-technology/halstack-react";
+import {
+  DxcSpinner,
+  DxcTable,
+  DxcPaginator,
+  DxcFlex,
+  DxcTypography,
+} from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
-import arrowUp from "./arrow_upward-24px_wht.svg";
-import arrowDown from "./arrow_downward-24px_wht.svg";
-import bothArrows from "./unfold_more-24px_wht.svg";
+import icons from "./Icons";
+import { HalTableProps } from "./types";
 
 const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn }) => {
   return `${collectionUrl}${collectionUrl.includes("?") ? "&" : "?"}_start=${
@@ -12,13 +17,20 @@ const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn }) => {
   }&_num=${itemsPerPage}${sortColumn ? `&_sort=${sortColumn}` : ``}`;
 };
 
+type NavigationFunctions = {
+  onPageChange: (newPage: number) => void;
+  sort: (column: string) => void;
+};
 const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage) => {
   const [isLoading, changeIsLoading] = useState(true);
-  const [navigationFunctions, changeNavigationFunctions] = useState({});
+  const [navigationFunctions, changeNavigationFunctions] = useState<NavigationFunctions>({
+    onPageChange: () => {},
+    sort: () => {},
+  });
   const [page, changePage] = useState(1);
-  const [error, changeError] = useState(null);
+  const [error, changeError] = useState("");
   const [collectionItems, changeCollectionItems] = useState([]);
-  const [totalCollectionItems, changeTotalCollectionItems] = useState(null);
+  const [totalCollectionItems, changeTotalCollectionItems] = useState(0);
   const [sortColumn, changeSortColumn] = useState("");
 
   useEffect(() => {
@@ -31,9 +43,7 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
           headers: { ...headers, ...asyncHeadears },
         });
         changeIsLoading(false);
-        changeTotalCollectionItems(
-          response.body?._count || response.body?._links?._count || undefined
-        );
+        changeTotalCollectionItems(response.body?._count || response.body?._links?._count || 0);
         changeNavigationFunctions({
           onPageChange: (newPage) => {
             changePage(newPage);
@@ -43,11 +53,11 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
             changeSortColumn(column);
           },
         });
-        const result = response?.halResource?.getItems();
+
+        let result = response?.halResource?.getItems();
         // if item is an object convert to an array.
-        if (!Array.isArray(result)) {
-          result = [result];
-        }
+        if (!Array.isArray(result)) result = [result];
+
         changeCollectionItems(result);
       } catch (err) {
         changeIsLoading(false);
@@ -69,7 +79,31 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
   };
 };
 
-const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsPerPage = 5 }) => {
+const getIconForSortableColumn = (property, sortColumn) =>
+  property === sortColumn
+    ? icons.arrowUp
+    : `-${property}` === sortColumn
+    ? icons.arrowDown
+    : icons.bothArrows;
+
+const sortByColumn = (property, sort, sortColumn) => {
+  if (property) return property === sortColumn ? sort(`-${property}`) : sort(property);
+};
+
+const getCellInfo = (listItem, columnProperty) => {
+  const propertyValue = listItem.summary[columnProperty.displayProperty];
+  const propertyStringValue =
+    propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
+  return columnProperty.mapFunction ? columnProperty.mapFunction(listItem) : propertyStringValue;
+};
+
+const HalTable = ({
+  collectionUrl,
+  asyncHeadersHandler,
+  headers,
+  columns,
+  itemsPerPage = 5,
+}: HalTableProps): JSX.Element => {
   const {
     isLoading,
     navigationFunctions,
@@ -81,56 +115,45 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
   } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage);
   const { onPageChange, sort } = navigationFunctions;
 
-  const getCellInfo = (listItem, columnProperty) => {
-    const propertyValue = listItem.summary[columnProperty.displayProperty];
-    const propertyStringValue =
-      propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
-    return columnProperty.mapFunction ? columnProperty.mapFunction(listItem) : propertyStringValue;
-  };
-
-  const sortByColumn = (property) => {
-    if (property) {
-      return property === sortColumn ? sort(`-${property}`) : sort(property);
-    }
-  };
-
-  const getIconForSortableColumn = (property) => {
-    return property === sortColumn
-      ? arrowUp
-      : `-${property}` === sortColumn
-      ? arrowDown
-      : bothArrows;
-  };
-
   return (
-    <HalTableContainer>
+    <div>
       <DxcTable>
-        <HeaderRow>
+        <thead>
           <tr>
             {columns.map((column) => (
-              <TableHeader key={`th-${column.header}`}>
+              <th
+                key={`tableHeader_${column.header}`}
+                aria-sort={
+                  column.sortProperty === sortColumn
+                    ? "ascending"
+                    : `-${column.sortProperty}` === sortColumn
+                    ? "descending"
+                    : "none"
+                }
+              >
                 <HeaderContainer
-                  onClick={() => sortByColumn(column.sortProperty)}
+                  role={column.sortProperty ? "button" : undefined}
+                  onClick={() => sortByColumn(column.sortProperty, sort, sortColumn)}
                   tabIndex={column.sortProperty ? 0 : -1}
-                  isSortable={column.sortProperty}
+                  isSortable={column.sortProperty ? true : false}
                 >
-                  <TitleDiv isSortable={column.sortProperty}>{column.header}</TitleDiv>
+                  <span>{column.header}</span>
                   {column.sortProperty && (
-                    <SortIcon src={getIconForSortableColumn(column.sortProperty)} />
+                    <SortIcon>{getIconForSortableColumn(column.sortProperty, sortColumn)}</SortIcon>
                   )}
                 </HeaderContainer>
-              </TableHeader>
+              </th>
             ))}
           </tr>
-        </HeaderRow>
-        <TableRowGroup>
+        </thead>
+        <tbody>
           {!isLoading &&
             collectionItems.length > 0 &&
             collectionItems.map((collectionItem, i) => (
-              <TableRow key={`tr-${i}`}>
+              <tr key={`tr-${i}`}>
                 {columns.map((columnProperty) => (
                   <td key={`tr-${i}-${columnProperty.displayProperty}`}>
-                    {(columnProperty.onClickItemFunction && (
+                    {columnProperty.onClickItemFunction ? (
                       <LinkRow
                         onClick={() => {
                           columnProperty.onClickItemFunction(collectionItem);
@@ -138,22 +161,25 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
                       >
                         {getCellInfo(collectionItem, columnProperty)}
                       </LinkRow>
-                    )) ||
-                      getCellInfo(collectionItem, columnProperty)}
+                    ) : (
+                      getCellInfo(collectionItem, columnProperty)
+                    )}
                   </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-        </TableRowGroup>
+        </tbody>
       </DxcTable>
       {isLoading ? (
-        <LoadingContainer>
+        <DxcFlex justifyContent="center">
           <DxcSpinner margin="xxlarge" label="Fetching data" />
-        </LoadingContainer>
+        </DxcFlex>
       ) : (
         !error &&
         !collectionItems.length && (
-          <MessageContainer>There are no items in this list.</MessageContainer>
+          <MessageContainer>
+            <DxcTypography color="#888888">There are no items in this list.</DxcTypography>
+          </MessageContainer>
         )
       )}
       {!error && totalCollectionItems > 0 && (
@@ -165,78 +191,61 @@ const HalTable = ({ collectionUrl, asyncHeadersHandler, headers, columns, itemsP
           onPageChange={onPageChange}
         />
       )}
-      {error && <MessageContainer error>{error}</MessageContainer>}
-    </HalTableContainer>
+      {error && (
+        <MessageContainer hasError={true}>
+          <DxcTypography color="#d0011b">{error}</DxcTypography>
+        </MessageContainer>
+      )}
+    </div>
   );
 };
-const HeaderContainer = styled.div`
+
+const HeaderContainer = styled.div<{ isSortable: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: ${(props) =>
+    props.theme.headerTextAlign === "center"
+      ? "center"
+      : props.theme.headerTextAlign === "right"
+      ? "flex-end"
+      : "flex-start"};
+  gap: 8px;
   width: fit-content;
-  :focus {
-    ${(props) =>
-      props.isSortable &&
-      `outline: #0095ff solid 2px; 
-        outline-offset: 4px;`}
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 3px;
+  cursor: ${(props) => (props.isSortable ? "pointer" : "default")};
+
+  ${(props) =>
+    props.isSortable &&
+    `&:focus {
+      outline: #0095ff solid 2px;
+    }`}
+`;
+
+const SortIcon = styled.span`
+  display: flex;
+  color: ${(props) => props.theme.sortIconColor};
+
+  svg {
+    height: 14px;
+    width: 14px;
   }
 `;
-
-const TitleDiv = styled.div`
-  cursor: ${(props) => (props.isSortable && "pointer") || "default"};
-`;
-
-const SortIcon = styled.img`
-  top: 409px;
-  left: 390px;
-  height: 14px;
-  cursor: pointer;
-`;
-
-const TableHeader = styled.th``;
 
 const LinkRow = styled.a`
   text-decoration: none;
   color: #666666;
   cursor: pointer;
 `;
-const LoadingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
-const MessageContainer = styled.div`
+const MessageContainer = styled.div<{ hasError?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 50px;
   margin-top: 10px;
-  background: ${({ error }) => (error ? "#fff4f4" : "#f8f8f8")};
-  color: ${({ error }) => (error ? "#cb4242" : "#888888")};
-`;
-
-const HalTableContainer = styled.div`
-  > table:nth-child(1) {
-    width: 100%;
-    position: relative;
-  }
-`;
-
-const TableRowGroup = styled.tbody`
-  > div:nth-child(1) {
-    position: absolute;
-    left: calc(50% - 68.5px);
-    bottom: calc(50% - 68.5px - 30px);
-  }
-`;
-
-const TableRow = styled.tr`
-  height: 60px;
-`;
-
-const HeaderRow = styled.thead`
-  height: 60px;
+  background: ${({ hasError }) => (hasError ? "#FFF5F6" : "#f8f8f8")};
 `;
 
 export default HalTable;

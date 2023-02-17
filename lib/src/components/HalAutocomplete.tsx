@@ -1,16 +1,23 @@
 import React, { useCallback } from "react";
 import { DxcTextInput } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
+import { HalAutocompleteProps } from "./types";
 
-const addFilterParams = (url, value, propertyName) =>
+const addFilterParams = (url: string, value: string, propertyName: string) =>
   `${url}${url.includes("?") ? "&" : "?"}${propertyName}=${value}`;
 
-const HalAutocomplete = ({ propertyName, url, asyncHeadersHandler, headers, ...childProps }) => {
+const HalAutocomplete = ({
+  collectionUrl,
+  headers,
+  asyncHeadersHandler,
+  propertyName,
+  ...childProps
+}: HalAutocompleteProps): JSX.Element => {
   const getSuggestionsFromAPI = useCallback(
-    async (newValue) => {
+    async (value: string): Promise<string[]> => {
       const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
       const response = await HalApiCaller.get({
-        url: newValue ? addFilterParams(url, newValue, propertyName) : url,
+        url: value ? addFilterParams(collectionUrl, value, propertyName) : collectionUrl,
         headers: { ...headers, ...asyncHeadears },
       });
 
@@ -18,7 +25,7 @@ const HalAutocomplete = ({ propertyName, url, asyncHeadersHandler, headers, ...c
         ? response.halResource.getItems().map((item) => item.summary[propertyName])
         : [];
     },
-    [propertyName, url, asyncHeadersHandler, headers]
+    [propertyName, collectionUrl, asyncHeadersHandler, headers]
   );
 
   return <DxcTextInput {...childProps} suggestions={getSuggestionsFromAPI} />;
