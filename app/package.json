@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dxc-technology/halstack-react": "8.0.0",
+    "@dxc-technology/halstack-react": "^9.0.0",
     "@dxc-technology/halstack-react-hal": "file:../lib",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.13.0",
