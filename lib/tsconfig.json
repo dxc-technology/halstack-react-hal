@@ -8,6 +8,9 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": false
+    "strict": false,
+    "module": "esnext",
+    "target": "ESNext",
+    "moduleResolution": "Node"
   }
 }

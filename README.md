@@ -174,7 +174,7 @@ npm install
 Run the build process into `dist` folder, detecting and automatically building changes in src.
 
 ```bash
-npm run build:watch # or 'npm run build' if there is no need to watch for changes
+npm run build:link # or 'npm run build' if there is no need to link the lib
 ```
 
 ### Example Application
@@ -191,10 +191,14 @@ Install the application dependencies. The Halstack React CDK dependency is linke
 npm install
 ```
 
+Link to the lib after the link has been created.
+
+```bash
+npm link @dxc-technology/halstack-react-hal
+```
+
 Start the application.
 
 ```bash
-npm start # runs create-react-app dev server
+npm run dev # runs vite dev server
 ```
-
-Now, anytime you make a change to the library or the app, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
