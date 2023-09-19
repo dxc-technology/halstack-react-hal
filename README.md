@@ -174,7 +174,7 @@ npm install
 Run the build process into `dist` folder, detecting and automatically building changes in src.
 
 ```bash
-npm run build:link # or 'npm run build' if there is no need to link the lib
+npm run build
 ```
 
 ### Example Application
@@ -189,12 +189,6 @@ Install the application dependencies. The Halstack React CDK dependency is linke
 
 ```bash
 npm install
-```
-
-Link to the lib after the link has been created.
-
-```bash
-npm link @dxc-technology/halstack-react-hal
 ```
 
 Start the application.
