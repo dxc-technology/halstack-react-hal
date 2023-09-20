@@ -12,11 +12,12 @@
   "types": "./dist/main.d.ts",
   "license": "Apache-2.0",
   "peerDependencies": {
+    "react": "^18.x",
+    "react-dom": "^18.x",
     "@dxc-technology/halstack-react": "^10.0.0"
   },
   "dependencies": {
-    "@dxc-technology/halstack-client": "^1.3.3",
-    "react": "^18.2.0"
+    "@dxc-technology/halstack-client": "^1.3.3"
   },
   "scripts": {
     "test": "jest",
