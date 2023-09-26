@@ -171,10 +171,16 @@ Install the library dependencies.
 npm install
 ```
 
-Run the build process into `dist` folder, detecting and automatically building changes in src.
+Run the build process into `dist` folder.
 
 ```bash
 npm run build
+```
+
+Use `build:watch` to detect changes and add them to the build.
+
+```bash
+npm run build:watch
 ```
 
 ### Example Application
