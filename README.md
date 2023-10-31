@@ -157,44 +157,32 @@ These instructions will get you a copy of the project up and running on your loc
 
 The project is divided in two main folders. One is for the actual library, and the other one is a React application using the library.
 
-### Library
+### Project
 
-Contained in the `lib` folder.
-
-```bash
-cd lib
-```
-
-Install the library dependencies.
+Install the dependencies for the library and the example project.
 
 ```bash
 npm install
 ```
 
-Run the build process into `dist` folder, detecting and automatically building changes in src.
+### Library
+
+Contained in the `lib` folder.
+
+Run the build process into `dist` folder.
 
 ```bash
-npm run build:watch # or 'npm run build' if there is no need to watch for changes
+nx build halstack-react-hal
 ```
 
 ### Example Application
 
 Contained in the `app` folder.
 
-```bash
-cd app # from the root folder
-```
-
-Install the application dependencies. The Halstack React CDK dependency is linked to the local `lib` folder. This one must have been previously built.
-
-```bash
-npm install
-```
-
 Start the application.
 
 ```bash
-npm start # runs create-react-app dev server
+nx serve app
 ```
 
-Now, anytime you make a change to the library or the app, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
+Now, anytime you make a change to the library or the app, `nx` will live-reload your local dev server so you can iterate on your component in real-time.
