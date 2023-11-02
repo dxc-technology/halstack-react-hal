@@ -4,7 +4,7 @@ Halstack React HAL is an npm library of reusable React components. It brings tog
 
 - Consuming HAL REST APIs implemented following the [DXC API Guidelines](https://developer.dxc.com/apis).
 
-- Rendering these API resources as UI components that are compliant with the [DXC UX Guidelines](https://developer.dxc.com/halstack/6/).
+- Rendering these API resources as UI components that are compliant with the [DXC UX Guidelines](https://developer.dxc.com/halstack/10/overview/introduction/).
 
 We have other libraries that will help you handling these responsibilities individually ([Halstack Client](https://github.com/dxc-technology/halstack-client) / [Halstack React](https://github.com/dxc-technology/halstack-react)). Halstack React HAL uses them under the hood, but it is a higher level abstraction that puts both responsibilities together using the most common association patterns.
 
