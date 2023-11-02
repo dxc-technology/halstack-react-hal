@@ -22,10 +22,10 @@ jobs:
         run: npm install
 
       - name: Build library
-        run: nx build halstack-react-hal
+        run: npx nx build halstack-react-hal
 
       - name: Copy README
-        run: nx run copy
+        run: npx nx run copy
 
       - name: Publish RELEASE to npm
         run: |
