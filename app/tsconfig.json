@@ -8,7 +8,6 @@
   },
   "files": [],
   "include": [],
-  "typeRoots": ["index.d.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"
