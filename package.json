@@ -1,5 +1,5 @@
 {
-  "name": "@test-nx/source",
+  "name": "@halstack-react-hal/source",
   "version": "0.0.0",
   "description": "DXC Halstack React components library for HAL APIs",
   "repository": "dxc-technology/halstack-react-hal",
