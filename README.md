@@ -169,7 +169,7 @@ npm install
 
 Contained in the `lib` folder.
 
-Run the build process into `dist` folder.
+Run the build process updating the bundled files inside the dist folder.
 
 ```bash
 nx build halstack-react-hal
