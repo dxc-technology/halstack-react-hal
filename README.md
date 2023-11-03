@@ -172,7 +172,7 @@ Contained in the `lib` folder.
 Run the build process updating the bundled files inside the dist folder.
 
 ```bash
-nx build halstack-react-hal
+nx build halstack-react-hal #`npx nx build halstack-react-hal` if nx is not recognized as a command.
 ```
 
 ### Example Application
@@ -182,7 +182,7 @@ Contained in the `app` folder.
 Start the application.
 
 ```bash
-nx serve app
+nx serve app #`npx nx serve app` if nx is not recognized as a command.
 ```
 
 Now, anytime you make a change to the library or the app, `nx` will live-reload your local dev server so you can iterate on your component in real-time.
