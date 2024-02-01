@@ -1,10 +1,12 @@
-import { HalTable, HalAutocomplete } from '@dxc-technology/halstack-react-hal';
 import {
   DxcApplicationLayout,
-  DxcInset,
-  DxcHeading,
   DxcFlex,
+  DxcHeading,
+  DxcInset,
 } from '@dxc-technology/halstack-react';
+import { HalAutocomplete, HalTable } from '@dxc-technology/halstack-react-hal';
+
+import UXPinGeneratedCode from "./UXPinGeneratedCode";
 
 function App() {
   return (
@@ -12,6 +14,10 @@ function App() {
       <DxcApplicationLayout.Main>
         <DxcInset space="2rem">
           <DxcFlex direction="column" gap="4rem">
+            <DxcFlex direction="column" gap="2rem">
+              <DxcHeading level={2} text="HalForm Example" />              
+              <UXPinGeneratedCode />            
+              </DxcFlex>
             <DxcFlex direction="column" gap="2rem">
               <DxcHeading level={2} text="HalTable example" />
               <HalTable
