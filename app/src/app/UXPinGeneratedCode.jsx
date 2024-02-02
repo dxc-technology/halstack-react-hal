@@ -1,9 +1,8 @@
 /**
  * Info:
  * 1. 'import' statements
- * 2. Component Definition
- * 3. 'type' attribute in DXC Components are added manually to the generated code (this is a violation of intrinsic prop assignment)
- * therefore we need to solve this before anything else
+ * 2. Component Definition 
+ *  are added manually to the generated code
  * */
 
 import {
@@ -13,19 +12,34 @@ import {
   DxcInset,
   DxcNumberInput,
   DxcSelect,
+  DxcTextInput,
 } from "@dxc-technology/halstack-react";
 
 import { HalForm } from "@dxc-technology/halstack-react-hal";
 
 const authHeaders = {};
 
-const apiEndpoint = "";
+const apiEndpoint =  "";
 
 const UXPinGeneratedCode = () => (
   <HalForm apiEndpoint={apiEndpoint} authHeaders={authHeaders} selfManagedSave={true}>
     <DxcBox>
       <DxcInset space="2rem">
         <DxcFlex direction="column">
+          <DxcFlex gap="2rem" direction="row">
+            <DxcTextInput
+              label="Status"
+              helperText="Status of the offer"
+              placeholder="Status"
+              name="contract:proposition_status"
+            />
+            <DxcNumberInput
+              label="Premium"
+              helperText="Premium payable at the start of term"
+              placeholder="0.00"
+              name="contract:total_premium"
+            />
+          </DxcFlex>
           <DxcFlex gap="2rem">
             <DxcDateInput
               label="Contract Signature Date"
@@ -33,25 +47,14 @@ const UXPinGeneratedCode = () => (
               placeholder={true}
               name="contract:signature_date"
               format="yyyy-MM-dd"
-              type="DxcDateInput"
             />
             <DxcSelect
               label="Contract Language"
               placeholder="Choose a Language"
               name="contract:language"
-              helperText="Contract documents are generated in selected language"
-              type="DxcSelect"
+              helperText="Contract documents are generated in selected language"              
             />
-          </DxcFlex>
-          <DxcFlex gap="2rem" direction="row">
-            <DxcNumberInput
-              label="Premium"
-              helperText="Premium payable at the start of term"
-              placeholder="0.00"
-              name="contract:total_premium"
-              type="DxcNumberInput"
-            />
-          </DxcFlex>
+          </DxcFlex>          
         </DxcFlex>
       </DxcInset>
     </DxcBox>
