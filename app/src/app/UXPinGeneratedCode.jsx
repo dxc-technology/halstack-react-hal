@@ -6,59 +6,88 @@
  * */
 
 import {
-  DxcBox,
   DxcDateInput,
   DxcFlex,
-  DxcInset,
-  DxcNumberInput,
+  DxcGrid,
+  DxcRadioGroup,
   DxcSelect,
   DxcTextInput,
+  DxcTextarea
 } from "@dxc-technology/halstack-react";
 
 import { HalForm } from "@dxc-technology/halstack-react-hal";
 
-const authHeaders = {};
+const authHeaders = {
+  "x-auth-username": "DSINGH",
+  "x-api-key": "48SmqcLpec3t1TO8EMzaDaamMz25pDZ469NFux41",
+};
 
-const apiEndpoint =  "";
+const apiEndpoint =
+  "https://diaas-dev.gtaia-test-domain.net/std-dev-lux-alt-13111/insurance/persons/ID-wJsQCHTKS";
 
 const UXPinGeneratedCode = () => (
-  <HalForm apiEndpoint={apiEndpoint} authHeaders={authHeaders} selfManagedSave={true}>
-    <DxcBox>
-      <DxcInset space="2rem">
-        <DxcFlex direction="column">
-          <DxcFlex gap="2rem" direction="row">
-            <DxcTextInput
-              label="Status"
-              helperText="Status of the offer"
-              placeholder="Status"
-              name="contract:proposition_status"
-            />
-            <DxcNumberInput
-              label="Premium"
-              helperText="Premium payable at the start of term"
-              placeholder="0.00"
-              name="contract:total_premium"
-            />
-          </DxcFlex>
-          <DxcFlex gap="2rem">
-            <DxcDateInput
-              label="Contract Signature Date"
-              helperText="Helper text"
-              placeholder={true}
-              name="contract:signature_date"
-              format="yyyy-MM-dd"
-            />
-            <DxcSelect
-              label="Contract Language"
-              placeholder="Choose a Language"
-              name="contract:language"
-              helperText="Contract documents are generated in selected language"              
-            />
-          </DxcFlex>          
-        </DxcFlex>
-      </DxcInset>
-    </DxcBox>
-  </HalForm>
+
+
+    <DxcFlex
+      gap="3rem"
+      direction="column"
+    >
+      <HalForm
+        apiEndpoint={apiEndpoint}
+        authHeaders={authHeaders}
+        selfManagedSave={true}
+      >
+        <DxcGrid
+          templateColumns={['repeat(3, 1fr)']}
+          gap="1rem"
+        >
+          <DxcRadioGroup
+            label="Title"
+            options={[
+              { label: 'Female', value: 'female' },
+              { label: 'Male', value: 'male' },
+              { label: 'Non-binary', value: 'non-binary' },
+              { label: 'Other', value: 'other' }
+            ]}
+            name="person:person_title"
+            stacking="row"
+            helperText="Must match official identification documents"
+          />
+          <DxcTextInput
+            label="Family Name"
+            helperText="Must match official identification documents"
+            placeholder="Enter family name"
+            name="person:last_name"
+          />
+          <DxcTextInput
+            label="First Name"
+            helperText="Must match official identification documents"
+            placeholder="Enter first name"
+            name="person:first_name"
+          />
+          <DxcSelect
+            label="Professional  Status"
+            placeholder="Choose a title"
+            name="person:professional_status"
+            helperText="Prefix to Insured's name"
+          />
+          <DxcDateInput
+            label="Date of Birth"
+            helperText="Legal age for insured is above 10 years"
+            placeholder={true}
+            name="person:birth_date"
+            
+          />
+          <DxcTextarea
+            label="Insured Display ID"
+            helperText="This is how Insured ID will appear on documents"
+            placeholder=""
+            name="person:display_id"
+          />
+        </DxcGrid>
+      </HalForm>
+    </DxcFlex>
+ 
 );
 
 export default UXPinGeneratedCode;

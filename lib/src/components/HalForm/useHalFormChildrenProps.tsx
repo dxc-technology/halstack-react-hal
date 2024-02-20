@@ -1,9 +1,7 @@
 import { ChangeEvent, Children, useState } from "react";
 import React, { useEffect } from "react";
 
-import DxcDateInput from "@dxc-technology/halstack-react/date-input/DateInput";
-import DxcSelect from "@dxc-technology/halstack-react/select/Select";
-import useHalResource from "lib/src/hooks/useHalResource";
+import useHalResource from "../../hooks/useHalResource";
 
 /**
  * State management is not Production quality
@@ -11,14 +9,25 @@ import useHalResource from "lib/src/hooks/useHalResource";
  * If this project gets approved this will be first item to be refactored
  */
 
-interface InputProps {
+type InputProps = {
   formState: Record<string, string>;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   name: string;
   type?: string;
   value: string;
   onBlur?: any;
-}
+};
+
+type errorType = {
+  status?: string;
+  message?: string;
+  body?: {
+    _outcome?: any;
+    messages?: any;
+  };
+};
+
+type SchemaType = "date" | "select" | "text" | "number";
 
 const useHalFormChildrenProps = (
   children: React.ReactNode,
@@ -28,13 +37,14 @@ const useHalFormChildrenProps = (
 ) => {
   const [formState, setFormState] = useState<Record<string, any>>({});
   const [onlyUpdatedFields, setOnlyUpdatedFields] = useState<Record<string, any>>({});
+  const [apiUpdateError, setAPIUpdateError] = useState<errorType>({});
   const [apiData, requestStatus, requestError, resourceInteractions] = useHalResource({
     url: apiEndpoint,
     headers: authHeaders,
   });
 
-  useEffect(() => {
-    const values: Record<string, any> = {};
+  useEffect(() => {    
+    const values: Record<string, any> = {...formState, ...onlyUpdatedFields};
     const extractFormValues = (children: React.ReactNode) => {
       Children.forEach(children, (child) => {
         if (React.isValidElement(child)) {
@@ -42,16 +52,48 @@ const useHalFormChildrenProps = (
           if (props.children) {
             extractFormValues(props.children);
           }
-          if (!props.children && props.name) {
+          
+          if (!props.children && props.name && apiData) {
             values[props.name] = apiData.getProperty(props.name).value ?? null;
           }
         }
       });
     };
 
-    requestStatus === "resolved" && extractFormValues(children);
+    extractFormValues(children);
     setFormState(values);
-  }, [children, apiData, requestStatus]);
+  }, [apiData]);
+
+  const schemaType = (child: any) => {    
+    const schemaDataProperties: any = apiData?.getSchemaProperties();
+    if (schemaDataProperties) {
+      const schemaOfChild: any = schemaDataProperties.find(
+        (obj: any) => obj.key === child.props.name
+      );
+      if (schemaOfChild?.oneOf) {
+        return "select";
+      }
+      if (schemaOfChild?.format === "date") {
+        return "date";
+      }
+      if (schemaOfChild?.format === "number") {
+        return "number";
+      }
+      if (schemaOfChild?.format === "integer") {
+        return "integer";
+      }
+      return "text";
+    }
+  };
+
+  const updateHandler = async (payload: any) => {
+    try {
+      await resourceInteractions.update(payload);
+      setAPIUpdateError({});
+    } catch (error: any) {
+      setAPIUpdateError(error);
+    }
+  };
 
   const obtainRenderProps = (child: any) => {
     const properties: any = {
@@ -64,26 +106,26 @@ const useHalFormChildrenProps = (
       value: formState[child.props.name] || "",
     };
 
-    switch (child.type) {
-      case DxcDateInput:
+    switch (schemaType(child)) {
+      case "date":
         properties.onChange = async (e: any) => {
           if (selfManagedSave && resourceInteractions.update) {
             const { name } = child.props;
             const { value } = e;
             setFormState({ ...formState, [name]: value });
-            await resourceInteractions.update({ [name]: value });
+            await updateHandler({ [name]: value });
             setOnlyUpdatedFields({});
           }
         };
         break;
-      case DxcSelect:
+      case "select":
         {
           const schemaDataProperties: any = apiData.getSchemaProperties();
           if (schemaDataProperties) {
             const schemaOfChild: any = schemaDataProperties.find(
               (obj: any) => obj.key === child.props.name
             );
-            if (schemaOfChild && schemaOfChild.oneOf) {
+            if (schemaOfChild?.oneOf) {
               properties.options = schemaOfChild.oneOf.map((one: any) => {
                 return { label: one.title, value: one.enum[0] };
               });
@@ -92,10 +134,14 @@ const useHalFormChildrenProps = (
 
           properties.onChange = async (e: any) => {
             const { name } = child.props;
-            const { value } = e;
+            let { value } = e;
+            if (!value) {
+              // this is due to inconsistent change event param
+              value = e;
+            }
             setFormState({ ...formState, [name]: value });
             if (selfManagedSave && resourceInteractions.update) {
-              await resourceInteractions.update({ [name]: value });
+              await updateHandler({ [name]: value });
               setOnlyUpdatedFields({});
             }
           };
@@ -105,7 +151,7 @@ const useHalFormChildrenProps = (
       default:
         properties.onBlur = async () => {
           if (selfManagedSave && resourceInteractions.update) {
-            await resourceInteractions.update(onlyUpdatedFields);
+            await updateHandler(onlyUpdatedFields);
             setOnlyUpdatedFields({});
           }
         };
@@ -116,19 +162,15 @@ const useHalFormChildrenProps = (
   };
   const processChildren = (children: React.ReactNode) => {
     return Children.map(children, (child) => {
-      if (React.isValidElement(child)) {       
-
+      if (React.isValidElement(child)) {
         if (child.props.children) {
           const processedGrandchildren: any = processChildren(child.props.children);
           return React.cloneElement(child, {}, processedGrandchildren);
         }
 
-       
-        const inputProps: InputProps = {          
+        const inputProps: InputProps = {
           ...obtainRenderProps(child),
         };
-        
-        
 
         return React.cloneElement(child, inputProps);
       }
@@ -136,7 +178,14 @@ const useHalFormChildrenProps = (
       return child;
     });
   };
-  return ({formState, onlyUpdatedFields, processChildren, requestStatus, requestError});
+  return {
+    formState,
+    onlyUpdatedFields,
+    processChildren,
+    requestStatus,
+    requestError,
+    apiUpdateError,
+  };
 };
 
 export default useHalFormChildrenProps;
