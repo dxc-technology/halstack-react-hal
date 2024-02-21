@@ -17,9 +17,13 @@ import {
 
 import { HalForm } from "@dxc-technology/halstack-react-hal";
 
-const authHeaders = {};
+const authHeaders = {
+  "x-auth-username": "pgdimitr",
+  "x-api-key": "48SmqcLpec3t1TO8EMzaDaamMz25pDZ469NFux41",
+};
 
-const apiEndpoint = "";
+const apiEndpoint =
+  "https://diaas-dev.gtaia-test-domain.net/std-dev-lux-alt-13111/insurance/persons/ID-wJsQCFmjS";
 
 const UXPinGeneratedCode = () => (
   <DxcFlex gap="3rem" direction="column">
@@ -27,12 +31,7 @@ const UXPinGeneratedCode = () => (
       <DxcGrid templateColumns={["repeat(3, 1fr)"]} gap="1rem">
         <DxcRadioGroup
           label="Title"
-          options={[
-            { label: "Female", value: "female" },
-            { label: "Male", value: "male" },
-            { label: "Non-binary", value: "non-binary" },
-            { label: "Other", value: "other" },
-          ]}
+          options={[{}]}
           name="person:person_title"
           stacking="row"
           helperText="Must match official identification documents"
