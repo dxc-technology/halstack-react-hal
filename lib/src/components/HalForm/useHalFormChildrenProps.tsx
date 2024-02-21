@@ -27,15 +27,13 @@ type errorType = {
   };
 };
 
-type SchemaType = "date" | "select" | "text" | "number";
-
 const useHalFormChildrenProps = (
   children: React.ReactNode,
   apiEndpoint: string,
   authHeaders: any,
   selfManagedSave?: boolean
 ) => {
-  const [formState, setFormState] = useState<Record<string, any>>({});
+  const [formFieldState, setFormFieldState] = useState<Record<string, any>>({});
   const [onlyUpdatedFields, setOnlyUpdatedFields] = useState<Record<string, any>>({});
   const [apiUpdateError, setAPIUpdateError] = useState<errorType>({});
   const [apiData, requestStatus, requestError, resourceInteractions] = useHalResource({
@@ -43,8 +41,12 @@ const useHalFormChildrenProps = (
     headers: authHeaders,
   });
 
-  useEffect(() => {    
-    const values: Record<string, any> = {...formState, ...onlyUpdatedFields};
+  const setFormState = (newState: Record<string, any>) => {
+    setFormFieldState((prevState: Record<string, any>) => ({ ...prevState, ...newState }));
+  };
+
+  useEffect(() => {
+    const values: Record<string, any> = { ...formFieldState, ...onlyUpdatedFields };
     const extractFormValues = (children: React.ReactNode) => {
       Children.forEach(children, (child) => {
         if (React.isValidElement(child)) {
@@ -52,7 +54,7 @@ const useHalFormChildrenProps = (
           if (props.children) {
             extractFormValues(props.children);
           }
-          
+
           if (!props.children && props.name && apiData) {
             values[props.name] = apiData.getProperty(props.name).value ?? null;
           }
@@ -64,7 +66,7 @@ const useHalFormChildrenProps = (
     setFormState(values);
   }, [apiData]);
 
-  const schemaType = (child: any) => {    
+  const schemaType = (child: any) => {
     const schemaDataProperties: any = apiData?.getSchemaProperties();
     if (schemaDataProperties) {
       const schemaOfChild: any = schemaDataProperties.find(
@@ -87,23 +89,27 @@ const useHalFormChildrenProps = (
   };
 
   const updateHandler = async (payload: any) => {
-    try {
-      await resourceInteractions.update(payload);
-      setAPIUpdateError({});
-    } catch (error: any) {
-      setAPIUpdateError(error);
+    if (payload && Object.keys(payload).length) {
+      try {
+        await resourceInteractions.update(payload);
+        setOnlyUpdatedFields({});
+        setAPIUpdateError({});
+      } catch (error: any) {
+        setAPIUpdateError(error);
+      }
     }
   };
 
   const obtainRenderProps = (child: any) => {
     const properties: any = {
+      key: child.props.name,
+      value: formFieldState[child.props.name] || "",
       onChange: (e: any) => {
         const { name } = child.props;
         const { value } = e;
-        setFormState({ ...formState, [name]: value });
+        setFormState({ [name]: value });
         setOnlyUpdatedFields({ ...onlyUpdatedFields, [name]: value });
       },
-      value: formState[child.props.name] || "",
     };
 
     switch (schemaType(child)) {
@@ -112,9 +118,8 @@ const useHalFormChildrenProps = (
           if (selfManagedSave && resourceInteractions.update) {
             const { name } = child.props;
             const { value } = e;
-            setFormState({ ...formState, [name]: value });
+            setFormState({ [name]: value });
             await updateHandler({ [name]: value });
-            setOnlyUpdatedFields({});
           }
         };
         break;
@@ -139,10 +144,9 @@ const useHalFormChildrenProps = (
               // this is due to inconsistent change event param
               value = e;
             }
-            setFormState({ ...formState, [name]: value });
+            setFormState({ [name]: value });
             if (selfManagedSave && resourceInteractions.update) {
               await updateHandler({ [name]: value });
-              setOnlyUpdatedFields({});
             }
           };
         }
@@ -152,7 +156,6 @@ const useHalFormChildrenProps = (
         properties.onBlur = async () => {
           if (selfManagedSave && resourceInteractions.update) {
             await updateHandler(onlyUpdatedFields);
-            setOnlyUpdatedFields({});
           }
         };
         break;
@@ -179,7 +182,7 @@ const useHalFormChildrenProps = (
     });
   };
   return {
-    formState,
+    formState: formFieldState,
     onlyUpdatedFields,
     processChildren,
     requestStatus,
