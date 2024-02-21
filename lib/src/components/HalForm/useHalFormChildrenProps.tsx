@@ -1,6 +1,7 @@
 import { ChangeEvent, Children, useState } from "react";
 import React, { useEffect } from "react";
 
+import { onOptions } from "./useHalOptions";
 import useHalResource from "../../hooks/useHalResource";
 
 /**
@@ -36,17 +37,19 @@ const useHalFormChildrenProps = (
   const [formFieldState, setFormFieldState] = useState<Record<string, any>>({});
   const [onlyUpdatedFields, setOnlyUpdatedFields] = useState<Record<string, any>>({});
   const [apiUpdateError, setAPIUpdateError] = useState<errorType>({});
+  const [apiOptions, setAPIOptions] = useState<Record<string, any>>({});
   const [apiData, requestStatus, requestError, resourceInteractions] = useHalResource({
     url: apiEndpoint,
     headers: authHeaders,
   });
 
-  const setFormState = (newState: Record<string, any>) => {
+ const setFormState = (newState: Record<string, any>) => {
     setFormFieldState((prevState: Record<string, any>) => ({ ...prevState, ...newState }));
   };
 
   useEffect(() => {
     const values: Record<string, any> = { ...formFieldState, ...onlyUpdatedFields };
+    const options: Record<string, any> = {...apiOptions };
     const extractFormValues = (children: React.ReactNode) => {
       Children.forEach(children, (child) => {
         if (React.isValidElement(child)) {
@@ -57,6 +60,7 @@ const useHalFormChildrenProps = (
 
           if (!props.children && props.name && apiData) {
             values[props.name] = apiData.getProperty(props.name).value ?? null;
+            options[props.name] =  onOptions(apiData.resourceRepresentation).getProperty(props.name) ?? null;            
           }
         }
       });
@@ -64,6 +68,7 @@ const useHalFormChildrenProps = (
 
     extractFormValues(children);
     setFormState(values);
+    setAPIOptions(options);
   }, [apiData]);
 
   const schemaType = (child: any) => {
@@ -104,6 +109,12 @@ const useHalFormChildrenProps = (
     const properties: any = {
       key: child.props.name,
       value: formFieldState[child.props.name] || "",
+      min: apiOptions[child.props.name]?.min,
+      max: apiOptions[child.props.name]?.max,      
+      disabled: !apiOptions[child.props.name]?.canPatch?.(),            
+      optional: !apiOptions[child.props.name]?.isRequired,
+      minLength: apiOptions[child.props.name]?.minLength,
+      maxLength: apiOptions[child.props.name]?.maxLength,
       onChange: (e: any) => {
         const { name } = child.props;
         const { value } = e;
