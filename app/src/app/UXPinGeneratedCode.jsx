@@ -18,12 +18,11 @@ import {
 import { HalForm } from "@dxc-technology/halstack-react-hal";
 
 const authHeaders = {
-  "x-auth-username": "pgdimitr",
-  "x-api-key": "48SmqcLpec3t1TO8EMzaDaamMz25pDZ469NFux41",
+ 
 };
 
 const apiEndpoint =
-  "https://diaas-dev.gtaia-test-domain.net/std-dev-lux-alt-13111/insurance/persons/ID-wJsQCFmjS";
+  "";
 
 const UXPinGeneratedCode = () => (
   <DxcFlex gap="3rem" direction="column">
