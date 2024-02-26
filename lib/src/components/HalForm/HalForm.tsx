@@ -25,8 +25,6 @@ const HalForm: React.FC<HalFormProps> = ({
     processChildren,
     formState,
     onlyUpdatedFields,
-    requestStatus: apiRequestStatus,
-    requestError,
     apiUpdateError,
   } = useHalFormChildrenProps(
     children,

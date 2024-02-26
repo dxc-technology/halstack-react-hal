@@ -109,6 +109,8 @@ export interface OnOptionsReturn {
 export const onOptions = (response: any, forCollection = false): OnOptionsReturn => {
     const options = getOptionFromResponse(response);
 
+    
+
     const getMethod = (method: MethodType): MethodInterface => options['links']?.find((item: any) => item.method === method);
     const getMethodByRel = (rel: string): MethodInterface => options['links']?.find((item: any) => item.rel === rel);
     const getMethodSchema = (method: MethodType): any => getMethod(method)?.schema;
