@@ -115,6 +115,7 @@ const useHalFormChildrenProps = (
     if (!child?.props?.name) {
       return {};
     }
+    const isOneOf: boolean = apiOptions?.[child.props.name]?.isOneOf || false;
     const properties: any = {
       key: child.props.name,
       value: formFieldState?.[child.props.name] || "",
@@ -133,12 +134,17 @@ const useHalFormChildrenProps = (
         }
         setFormState({ [name]: value });
         setOnlyUpdatedFields({ ...onlyUpdatedFields, [name]: value });
+        if (isOneOf){
+          updateHandler({ [name]: value });
+        }
       },
       onBlur: async () => {
-        await updateHandler(onlyUpdatedFields);
+        if (!isOneOf){
+          await updateHandler(onlyUpdatedFields);
+        }
       },
     };
-    if (apiOptions?.[child.props.name]?.isOneOf) {
+    if (isOneOf) {
       properties.options = apiOptions?.[child.props.name]?.getValuesOfOneOf();
     }
 
