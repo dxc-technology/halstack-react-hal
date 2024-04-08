@@ -5,6 +5,7 @@ import {
   DxcPaginator,
   DxcFlex,
   DxcTypography,
+  HalstackProvider,
 } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
@@ -116,87 +117,91 @@ const HalTable = ({
   const { onPageChange, sort } = navigationFunctions;
 
   return (
-    <div>
-      <DxcTable>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th
-                key={`tableHeader_${column.header}`}
-                aria-sort={
-                  column.sortProperty === sortColumn
-                    ? "ascending"
-                    : `-${column.sortProperty}` === sortColumn
-                    ? "descending"
-                    : "none"
-                }
-              >
-                <HeaderContainer
-                  role={column.sortProperty ? "button" : undefined}
-                  onClick={() => sortByColumn(column.sortProperty, sort, sortColumn)}
-                  tabIndex={column.sortProperty ? 0 : -1}
-                  isSortable={column.sortProperty ? true : false}
+    <HalstackProvider>
+      <div>
+        <DxcTable>
+          <thead>
+            <tr>
+              {columns.map((column) => (
+                <th
+                  key={`tableHeader_${column.header}`}
+                  aria-sort={
+                    column.sortProperty === sortColumn
+                      ? "ascending"
+                      : `-${column.sortProperty}` === sortColumn
+                      ? "descending"
+                      : "none"
+                  }
                 >
-                  <span>{column.header}</span>
-                  {column.sortProperty && (
-                    <SortIcon>{getIconForSortableColumn(column.sortProperty, sortColumn)}</SortIcon>
-                  )}
-                </HeaderContainer>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {!isLoading &&
-            collectionItems.length > 0 &&
-            collectionItems.map((collectionItem, i) => (
-              <tr key={`tr-${i}`}>
-                {columns.map((columnProperty) => (
-                  <td key={`tr-${i}-${columnProperty.displayProperty}`}>
-                    {columnProperty.onClickItemFunction ? (
-                      <LinkRow
-                        onClick={() => {
-                          columnProperty.onClickItemFunction(collectionItem);
-                        }}
-                      >
-                        {getCellInfo(collectionItem, columnProperty)}
-                      </LinkRow>
-                    ) : (
-                      getCellInfo(collectionItem, columnProperty)
+                  <HeaderContainer
+                    role={column.sortProperty ? "button" : undefined}
+                    onClick={() => sortByColumn(column.sortProperty, sort, sortColumn)}
+                    tabIndex={column.sortProperty ? 0 : -1}
+                    isSortable={column.sortProperty ? true : false}
+                  >
+                    <span>{column.header}</span>
+                    {column.sortProperty && (
+                      <SortIcon>
+                        {getIconForSortableColumn(column.sortProperty, sortColumn)}
+                      </SortIcon>
                     )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </DxcTable>
-      {isLoading ? (
-        <DxcFlex justifyContent="center">
-          <DxcSpinner margin="xxlarge" label="Fetching data" />
-        </DxcFlex>
-      ) : (
-        !error &&
-        !collectionItems.length && (
-          <MessageContainer>
-            <DxcTypography color="#888888">There are no items in this list.</DxcTypography>
+                  </HeaderContainer>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {!isLoading &&
+              collectionItems.length > 0 &&
+              collectionItems.map((collectionItem, i) => (
+                <tr key={`tr-${i}`}>
+                  {columns.map((columnProperty) => (
+                    <td key={`tr-${i}-${columnProperty.displayProperty}`}>
+                      {columnProperty.onClickItemFunction ? (
+                        <LinkRow
+                          onClick={() => {
+                            columnProperty.onClickItemFunction(collectionItem);
+                          }}
+                        >
+                          {getCellInfo(collectionItem, columnProperty)}
+                        </LinkRow>
+                      ) : (
+                        getCellInfo(collectionItem, columnProperty)
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </DxcTable>
+        {isLoading ? (
+          <DxcFlex justifyContent="center">
+            <DxcSpinner margin="xxlarge" label="Fetching data" />
+          </DxcFlex>
+        ) : (
+          !error &&
+          !collectionItems.length && (
+            <MessageContainer>
+              <DxcTypography color="#888888">There are no items in this list.</DxcTypography>
+            </MessageContainer>
+          )
+        )}
+        {!error && totalCollectionItems > 0 && (
+          <DxcPaginator
+            totalItems={totalCollectionItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={page}
+            showGoToPage={true}
+            onPageChange={onPageChange}
+          />
+        )}
+        {error && (
+          <MessageContainer hasError={true}>
+            <DxcTypography color="#d0011b">{error}</DxcTypography>
           </MessageContainer>
-        )
-      )}
-      {!error && totalCollectionItems > 0 && (
-        <DxcPaginator
-          totalItems={totalCollectionItems}
-          itemsPerPage={itemsPerPage}
-          currentPage={page}
-          showGoToPage={true}
-          onPageChange={onPageChange}
-        />
-      )}
-      {error && (
-        <MessageContainer hasError={true}>
-          <DxcTypography color="#d0011b">{error}</DxcTypography>
-        </MessageContainer>
-      )}
-    </div>
+        )}
+      </div>
+    </HalstackProvider>
   );
 };
 
