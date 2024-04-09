@@ -8,6 +8,9 @@
     "email": "DigitalInsurance@dxc.com",
     "url": "https://dxc.com"
   },
+  "dependencies": {
+    "core-js": "^3.36.0"
+  },
   "peerDependencies": {
     "react": "^18.x",
     "react-dom": "^18.x",
