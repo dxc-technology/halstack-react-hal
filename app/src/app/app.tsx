@@ -1,10 +1,10 @@
-import { HalTable, HalAutocomplete } from '@dxc-technology/halstack-react-hal';
+import { HalTable, HalAutocomplete } from "@dxc-technology/halstack-react-hal";
 import {
   DxcApplicationLayout,
   DxcInset,
   DxcHeading,
   DxcFlex,
-} from '@dxc-technology/halstack-react';
+} from "@dxc-technology/halstack-react";
 
 function App() {
   return (
@@ -15,23 +15,46 @@ function App() {
             <DxcFlex direction="column" gap="2rem">
               <DxcHeading level={2} text="HalTable example" />
               <HalTable
-                collectionUrl={'http://your-api/users'}
+                mode="reduced"
+                collectionUrl={"http://localhost:3001/policies"}
                 columns={[
                   {
-                    header: 'Email',
-                    displayProperty: 'email',
-                    sortProperty: 'email',
+                    header: "Email",
+                    displayProperty: "email",
+                    sortProperty: "email",
                   },
                   {
-                    header: 'Phone Number',
-                    displayProperty: 'phone_number',
-                    sortProperty: 'phone_number',
+                    header: "Phone Number",
+                    displayProperty: "phone_number",
+                    sortProperty: "phone_number",
                     onClickItemFunction: (value) => console.log(value),
                   },
                   {
-                    header: 'Username',
-                    displayProperty: 'username',
-                    sortProperty: 'username',
+                    header: "Username",
+                    displayProperty: "username",
+                    sortProperty: "username",
+                    mapFunction: (item) => `test-${item.summary.username}`,
+                  },
+                ]}
+              />
+              <HalTable
+                collectionUrl={"http://localhost:3001/policies"}
+                columns={[
+                  {
+                    header: "Email",
+                    displayProperty: "email",
+                    sortProperty: "email",
+                  },
+                  {
+                    header: "Phone Number",
+                    displayProperty: "phone_number",
+                    sortProperty: "phone_number",
+                    onClickItemFunction: (value) => console.log(value),
+                  },
+                  {
+                    header: "Username",
+                    displayProperty: "username",
+                    sortProperty: "username",
                     mapFunction: (item) => `test-${item.summary.username}`,
                   },
                 ]}
