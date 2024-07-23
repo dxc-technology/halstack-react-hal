@@ -14,12 +14,12 @@ type Column = {
    */
   sortProperty: string;
   /**
-   * Callback function that will be executed when the user clicks an item in that column. 
+   * Callback function that will be executed when the user clicks an item in that column.
    * The collection item will be passed to this function when executed.
    */
   onClickItemFunction?: (item: any) => void;
   /**
-   * Callback function that must return the value to be rendered in that column for a specific item. 
+   * Callback function that must return the value to be rendered in that column for a specific item.
    * The item will be passed to this function as a parameter.
    */
   mapFunction?: (item: any) => string;
@@ -49,6 +49,12 @@ export type HalTableProps = {
    * Array of objects specifying the columns to be displayed in the table.
    */
   columns: Column[];
+  /**
+   * Determines the visual style and layout
+   * - "default": Default table size.
+   * - "reduced": More compact table with less spacing for high density information.
+   */
+  mode?: "default" | "reduced";
 };
 
 export type HalAutocompleteProps = React.ComponentProps<typeof DxcTextInput> & {

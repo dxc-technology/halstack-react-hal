@@ -104,6 +104,7 @@ const HalTable = ({
   headers,
   columns,
   itemsPerPage = 5,
+  mode = "default",
 }: HalTableProps): JSX.Element => {
   const {
     isLoading,
@@ -118,7 +119,7 @@ const HalTable = ({
 
   return (
     <>
-      <DxcTable>
+      <DxcTable mode={mode}>
         <thead>
           <tr>
             {columns.map((column) => (
