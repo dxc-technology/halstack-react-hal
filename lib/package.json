@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "jest --collect-coverage",
-    "serve-server": "json-server src/tests/mockCollection.json"
+    "serve-server": "json-server src/tests/mockCollection.json & sleep 5"
   },
   "dependencies": {
     "core-js": "^3.36.0"
