@@ -1,11 +1,13 @@
 /* eslint-disable */
 export default {
-  displayName: 'halstack-react-hal',
-  preset: '../jest.preset.js',
-  transform: {
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
-    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/react/babel'] }],
+  moduleNameMapper: {
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../coverage/halstack-react-hal',
+  displayName: "halstack-react-hal",
+  transform: {
+    "^.+\\.[tj]sx?$": "babel-jest",
+  },
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  coverageDirectory: "../coverage/halstack-react-hal",
+  testEnvironment: "jsdom",
 };
