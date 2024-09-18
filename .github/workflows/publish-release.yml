@@ -21,6 +21,15 @@ jobs:
       - name: Install lib dependencies
         run: npm install
 
+      - name: Serve test server
+        run: npx nx serve-test halstack-react-hal
+
+      - name: Test lib
+        run: npx nx test halstack-react-hal
+
+      - name: Stop json-server
+        run: kill $(lsof -t -i:3000)
+
       - name: Build library
         run: npx nx build halstack-react-hal
 
