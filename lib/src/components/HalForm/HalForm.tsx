@@ -7,10 +7,7 @@ interface HalFormProps {
   children: ReactNode;
   apiEndpoint: string;
   authHeaders?: Record<string, string>;
-  onSubmit?: (
-    formState: Record<string, string>,
-    onlyUpdatedFields: Record<string, string>
-  ) => void;
+  onSubmit?: (formState: Record<string, string>, onlyUpdatedFields: Record<string, string>) => void;
   selfManagedSave?: boolean;
 }
 
@@ -21,12 +18,7 @@ const HalForm: React.FC<HalFormProps> = ({
   onSubmit,
   selfManagedSave,
 }) => {
-  const {
-    processChildren,
-    formState,
-    onlyUpdatedFields,
-    apiUpdateError,
-  } = useHalFormChildrenProps(
+  const { processChildren, formState, onlyUpdatedFields, apiUpdateError } = useHalFormChildrenProps(
     children,
     apiEndpoint,
     authHeaders,
@@ -43,18 +35,14 @@ const HalForm: React.FC<HalFormProps> = ({
   };
 
   return (
-    <>
+    <DxcFlex gap="2rem" direction="column">
       {apiUpdateError?.body?.messages?.map((err: any) => (
         <DxcFlex gap="2rem" direction="column">
-          <DxcAlert type="error" size="fillParent" inlineText={err.message} />
+          <DxcAlert type="error" size="fillParent" inlineText={err.message? `${err.context}: ${err.message}` : err} />
         </DxcFlex>
       ))}
-      <DxcFlex gap="2rem" direction="column">
-        <form onSubmit={handleSubmit}>
-          {processChildren(children)}
-        </form>
-      </DxcFlex>
-    </>
+      <form onSubmit={handleSubmit}>{processChildren(children)}</form>
+    </DxcFlex>
   );
 };
 

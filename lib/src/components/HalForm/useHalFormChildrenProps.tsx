@@ -25,6 +25,7 @@ type errorType = {
   body?: {
     _outcome?: any;
     messages?: any;
+    message?: any;
   };
 };
 
@@ -106,7 +107,7 @@ const useHalFormChildrenProps = (
         setOnlyUpdatedFields({});
         setAPIUpdateError({});
       } catch (error: any) {
-        setAPIUpdateError(error);
+        setAPIUpdateError({body: {messages: error?.response?.data?.messages? [...error.response.data.messages] : [error?.response?.data?.message]}});
       }
     }
   };
@@ -134,11 +135,11 @@ const useHalFormChildrenProps = (
         }
         setFormState({ [name]: value });
         setOnlyUpdatedFields({ ...onlyUpdatedFields, [name]: value });
-        if (isOneOf){
+        if (isOneOf || e.date){
           updateHandler({ [name]: value });
         }
       },
-      onBlur: async () => {
+      onBlur: async (e:  any) => {
         if (!isOneOf){
           await updateHandler(onlyUpdatedFields);
         }
