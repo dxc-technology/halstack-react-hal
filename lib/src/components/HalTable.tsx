@@ -5,6 +5,7 @@ import {
   DxcPaginator,
   DxcFlex,
   DxcTypography,
+  HalstackProvider,
 } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
@@ -103,6 +104,7 @@ const HalTable = ({
   headers,
   columns,
   itemsPerPage = 5,
+  mode = "default",
 }: HalTableProps): JSX.Element => {
   const {
     isLoading,
@@ -116,8 +118,8 @@ const HalTable = ({
   const { onPageChange, sort } = navigationFunctions;
 
   return (
-    <div>
-      <DxcTable>
+    <>
+      <DxcTable mode={mode}>
         <thead>
           <tr>
             {columns.map((column) => (
@@ -196,7 +198,7 @@ const HalTable = ({
           <DxcTypography color="#d0011b">{error}</DxcTypography>
         </MessageContainer>
       )}
-    </div>
+    </>
   );
 };
 

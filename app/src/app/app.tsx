@@ -3,10 +3,8 @@ import {
   DxcFlex,
   DxcHeading,
   DxcInset,
-} from '@dxc-technology/halstack-react';
-import { HalAutocomplete, HalTable } from '@dxc-technology/halstack-react-hal';
-
-import UXPinGeneratedCode from "./UXPinGeneratedCode";
+} from "@dxc-technology/halstack-react";
+import { HalAutocomplete, HalTable } from "@dxc-technology/halstack-react-hal";
 
 function App() {
   return (
@@ -15,29 +13,48 @@ function App() {
         <DxcInset space="2rem">
           <DxcFlex direction="column" gap="4rem">
             <DxcFlex direction="column" gap="2rem">
-              <DxcHeading level={2} text="HalForm Example" />              
-              <UXPinGeneratedCode />            
-              </DxcFlex>
-            <DxcFlex direction="column" gap="2rem">
               <DxcHeading level={2} text="HalTable example" />
               <HalTable
-                collectionUrl={'http://your-api/users'}
+                mode="reduced"
+                collectionUrl={"http://localhost:3001/policies"}
                 columns={[
                   {
-                    header: 'Email',
-                    displayProperty: 'email',
-                    sortProperty: 'email',
+                    header: "Email",
+                    displayProperty: "email",
+                    sortProperty: "email",
                   },
                   {
-                    header: 'Phone Number',
-                    displayProperty: 'phone_number',
-                    sortProperty: 'phone_number',
+                    header: "Phone Number",
+                    displayProperty: "phone_number",
+                    sortProperty: "phone_number",
                     onClickItemFunction: (value) => console.log(value),
                   },
                   {
-                    header: 'Username',
-                    displayProperty: 'username',
-                    sortProperty: 'username',
+                    header: "Username",
+                    displayProperty: "username",
+                    sortProperty: "username",
+                    mapFunction: (item) => `test-${item.summary.username}`,
+                  },
+                ]}
+              />
+              <HalTable
+                collectionUrl={"http://localhost:3001/policies"}
+                columns={[
+                  {
+                    header: "Email",
+                    displayProperty: "email",
+                    sortProperty: "email",
+                  },
+                  {
+                    header: "Phone Number",
+                    displayProperty: "phone_number",
+                    sortProperty: "phone_number",
+                    onClickItemFunction: (value) => console.log(value),
+                  },
+                  {
+                    header: "Username",
+                    displayProperty: "username",
+                    sortProperty: "username",
                     mapFunction: (item) => `test-${item.summary.username}`,
                   },
                 ]}

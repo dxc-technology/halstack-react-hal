@@ -20,7 +20,7 @@
         "tsConfig": "lib/tsconfig.lib.json",
         "project": "lib/package.json",
         "entryFile": "lib/src/index.ts",
-        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "external": ["@dxc-technology/halstack-client", "react", "react-dom", "react/jsx-runtime"],
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "compiler": "babel",
         "allowJs": true,
@@ -34,18 +34,16 @@
         ]
       }
     },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+    "serve-test": {
+      "executor": "nx:run-script",
       "options": {
-        "jestConfig": "lib/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "script": "serve-server"
+      }
+    },
+    "test": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "test"
       }
     }
   }
