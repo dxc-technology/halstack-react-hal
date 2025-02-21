@@ -205,15 +205,18 @@ const HalTable = ({
           </MessageContainer>
         )
       )}
-      {!error && !hidePaginator && totalCollectionItems > 0 && (
-        <DxcPaginator
-          totalItems={totalCollectionItems}
-          itemsPerPage={itemsPerPage}
-          currentPage={page}
-          showGoToPage={true}
-          onPageChange={onPageChange}
-        />
-      )}
+      {!error &&
+        !hidePaginator &&
+        totalCollectionItems > 0 &&
+        totalCollectionItems > itemsPerPage && (
+          <DxcPaginator
+            totalItems={totalCollectionItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={page}
+            showGoToPage={true}
+            onPageChange={onPageChange}
+          />
+        )}
       {error && (
         <MessageContainer hasError={true}>
           <DxcTypography color="#d0011b">{error}</DxcTypography>
