@@ -5,24 +5,36 @@ import {
   DxcPaginator,
   DxcFlex,
   DxcTypography,
-  HalstackProvider,
 } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
 import icons from "./Icons";
 import { HalTableProps } from "./types";
 
-const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn }) => {
-  return `${collectionUrl}${collectionUrl.includes("?") ? "&" : "?"}_start=${
-    (page - 1) * itemsPerPage + 1
-  }&_num=${itemsPerPage}${sortColumn ? `&_sort=${sortColumn}` : ``}`;
+const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn, handlePagination }) => {
+  let url = collectionUrl;
+  if (handlePagination) {
+    url += `${url.includes("?") ? "&" : "?"}_start=${
+      (page - 1) * itemsPerPage + 1
+    }&_num=${itemsPerPage}`;
+  }
+  if (sortColumn) {
+    url += `&_sort=${sortColumn}`;
+  }
+  return url;
 };
 
 type NavigationFunctions = {
   onPageChange: (newPage: number) => void;
   sort: (column: string) => void;
 };
-const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage) => {
+const useCollection = (
+  collectionUrl,
+  asyncHeadersHandler,
+  headers,
+  itemsPerPage,
+  handlePagination
+) => {
   const [isLoading, changeIsLoading] = useState(true);
   const [navigationFunctions, changeNavigationFunctions] = useState<NavigationFunctions>({
     onPageChange: () => {},
@@ -40,7 +52,7 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
       try {
         const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
         const response = await HalApiCaller.get({
-          url: addPageParams({ collectionUrl, page, itemsPerPage, sortColumn }),
+          url: addPageParams({ collectionUrl, page, itemsPerPage, sortColumn, handlePagination }),
           headers: { ...headers, ...asyncHeadears },
         });
         changeIsLoading(false);
@@ -67,7 +79,15 @@ const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage
     };
 
     fetchList();
-  }, [collectionUrl, asyncHeadersHandler, headers, page, itemsPerPage, sortColumn]);
+  }, [
+    collectionUrl,
+    asyncHeadersHandler,
+    headers,
+    page,
+    itemsPerPage,
+    handlePagination,
+    sortColumn,
+  ]);
 
   return {
     isLoading,
@@ -102,6 +122,7 @@ const HalTable = ({
   collectionUrl,
   asyncHeadersHandler,
   headers,
+  hidePaginator = false,
   columns,
   itemsPerPage = 5,
   mode = "default",
@@ -114,7 +135,7 @@ const HalTable = ({
     totalCollectionItems,
     error,
     sortColumn,
-  } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage);
+  } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage, !hidePaginator);
   const { onPageChange, sort } = navigationFunctions;
 
   return (
@@ -184,7 +205,7 @@ const HalTable = ({
           </MessageContainer>
         )
       )}
-      {!error && totalCollectionItems > 0 && (
+      {!error && !hidePaginator && totalCollectionItems > 0 && (
         <DxcPaginator
           totalItems={totalCollectionItems}
           itemsPerPage={itemsPerPage}
