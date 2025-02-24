@@ -35,6 +35,10 @@ export type HalTableProps = {
    */
   headers?: object;
   /**
+   * If true, paginator will not be displayed.
+   */
+  hidePaginator?: boolean;
+  /**
    * The amount of items to be displayed per page.
    * Will be used to calculate the _start and _num query parameters that will be sent to the collection for pagination.
    */
