@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, queryByText, render, waitFor } from "@testing-library/react";
 import HalTable from "../components/HalTable";
 
 describe("HalTable component tests", () => {
@@ -68,5 +68,50 @@ describe("HalTable component tests", () => {
     await waitFor(() => expect(getByText("trewqasdfgyhujikolpyt")).toBeTruthy());
     fireEvent.click(getByText("trewqasdfgyhujikolpyt"));
     expect(onCellClick).toHaveBeenCalledWith("trewqasdfgyhujikolpyt");
+  });
+  test("HalTable is not including paginator when itemsPerPage exceeds total", async () => {
+    const onCellClick = jest.fn();
+    const { queryByText } = render(
+      <HalTable
+        collectionUrl="http://localhost:3000/response"
+        columns={[
+          {
+            header: "identifier",
+            displayProperty: "identifier",
+            sortProperty: "identifier",
+            onClickItemFunction: (item) => onCellClick(item.summary.identifier),
+          },
+          {
+            header: "baseCompany",
+            displayProperty: "baseCompany",
+            sortProperty: "baseCompany",
+          },
+        ]}
+        itemsPerPage={100}
+      />
+    );
+    await waitFor(() => expect(queryByText("Go to page:")).toBeFalsy());
+  });
+  test("HalTable is including paginator by default", async () => {
+    const onCellClick = jest.fn();
+    const { getByText } = render(
+      <HalTable
+        collectionUrl="http://localhost:3000/response"
+        columns={[
+          {
+            header: "identifier",
+            displayProperty: "identifier",
+            sortProperty: "identifier",
+            onClickItemFunction: (item) => onCellClick(item.summary.identifier),
+          },
+          {
+            header: "baseCompany",
+            displayProperty: "baseCompany",
+            sortProperty: "baseCompany",
+          },
+        ]}
+      />
+    );
+    await waitFor(() => expect(getByText("Go to page:")).toBeTruthy());
   });
 });
