@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@dxc-technology/halstack-client": "^1.5.0",
+    "@dxc-technology/halstack-client": "^1.6.0",
     "@nx/next": "^17.0.0",
     "@swc/helpers": "~0.5.2",
     "next": "^14.2.11",
