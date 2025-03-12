@@ -16,7 +16,7 @@
       "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "./lib/dist",
+        "outputPath": "./dist",
         "tsConfig": "lib/tsconfig.lib.json",
         "project": "lib/package.json",
         "entryFile": "lib/src/index.ts",

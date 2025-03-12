@@ -10,4 +10,5 @@ export default {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   coverageDirectory: "../coverage/halstack-react-hal",
   testEnvironment: "jsdom",
+  transformIgnorePatterns: ["node_modules/(?!@dxc-technology)/halstack-react/"],
 };

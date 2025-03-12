@@ -5,6 +5,7 @@ import {
   DxcHeading,
   DxcFlex,
 } from "@dxc-technology/halstack-react";
+import React from "react";
 
 function App() {
   return (
