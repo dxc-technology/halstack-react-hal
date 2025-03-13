@@ -1,4 +1,4 @@
-import { fireEvent, queryByText, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import HalTable from "../components/HalTable";
 
 describe("HalTable component tests", () => {
@@ -113,5 +113,30 @@ describe("HalTable component tests", () => {
       />
     );
     await waitFor(() => expect(getByText("Go to page:")).toBeTruthy());
+  });
+});
+
+test("HalTable is rendering error on fetch fail.", async () => {
+  const onCellClick = jest.fn();
+  const { getByText } = render(
+    <HalTable
+      collectionUrl="http://error"
+      columns={[
+        {
+          header: "identifier",
+          displayProperty: "identifier",
+          sortProperty: "identifier",
+          onClickItemFunction: (item) => onCellClick(item.summary.identifier),
+        },
+        {
+          header: "baseCompany",
+          displayProperty: "baseCompany",
+          sortProperty: "baseCompany",
+        },
+      ]}
+    />
+  );
+  await waitFor(() => expect(getByText("Error fetching table data.")).toBeTruthy(), {
+    timeout: 5000,
   });
 });
