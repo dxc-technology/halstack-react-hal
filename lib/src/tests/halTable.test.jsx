@@ -96,7 +96,7 @@ describe("HalTable component tests", () => {
     const onCellClick = jest.fn();
     const { getByText } = render(
       <HalTable
-        collectionUrl="http://error"
+        collectionUrl="http://localhost:3000/response"
         columns={[
           {
             header: "identifier",
@@ -112,8 +112,31 @@ describe("HalTable component tests", () => {
         ]}
       />
     );
-    await waitFor(() => expect(getByText("Error fetching table data.")).toBeTruthy(), {
-      timeout: 5000,
-    });
+    await waitFor(() => expect(getByText("Go to page:")).toBeTruthy());
+  });
+});
+
+test("HalTable is rendering error on fetch fail.", async () => {
+  const onCellClick = jest.fn();
+  const { getByText } = render(
+    <HalTable
+      collectionUrl="http://error"
+      columns={[
+        {
+          header: "identifier",
+          displayProperty: "identifier",
+          sortProperty: "identifier",
+          onClickItemFunction: (item) => onCellClick(item.summary.identifier),
+        },
+        {
+          header: "baseCompany",
+          displayProperty: "baseCompany",
+          sortProperty: "baseCompany",
+        },
+      ]}
+    />
+  );
+  await waitFor(() => expect(getByText("Error fetching table data.")).toBeTruthy(), {
+    timeout: 5000,
   });
 });
