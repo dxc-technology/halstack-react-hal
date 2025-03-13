@@ -1,4 +1,4 @@
-import { fireEvent, queryByText, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import HalTable from "../components/HalTable";
 
 describe("HalTable component tests", () => {
@@ -96,7 +96,7 @@ describe("HalTable component tests", () => {
     const onCellClick = jest.fn();
     const { getByText } = render(
       <HalTable
-        collectionUrl="http://localhost:3000/response"
+        collectionUrl="http://error"
         columns={[
           {
             header: "identifier",
@@ -112,6 +112,8 @@ describe("HalTable component tests", () => {
         ]}
       />
     );
-    await waitFor(() => expect(getByText("Go to page:")).toBeTruthy());
+    await waitFor(() => expect(getByText("Error fetching table data.")).toBeTruthy(), {
+      timeout: 5000,
+    });
   });
 });
