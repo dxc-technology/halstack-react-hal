@@ -89,6 +89,7 @@
     "vitest": "^3.0.8"
   },
   "overrides": {
-    "esbuild": "0.25.1"
+    "esbuild": "0.25.1",
+    "koa": "2.16.1"
   }
 }
