@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
-import { ErrorResponse, RequestStatus, UseHalResource, UseHalResourceResponse } from "./types";
+import {
+  ErrorResponse,
+  HalResourceType,
+  Interactions,
+  RequestStatus,
+  UseHalResource,
+  UseHalResourceResponse,
+} from "./types";
 
 const buildErrorResponse = (error) => {
   const errorResponse: ErrorResponse = {
@@ -21,8 +28,8 @@ const useHalResource = ({
 }: UseHalResource): UseHalResourceResponse => {
   const [status, setStatus] = useState<RequestStatus>("idle");
   const [error, setError] = useState<ErrorResponse>();
-  const [resource, setResource] = useState<object>(null);
-  const [interactions, setInteractions] = useState<object>(null);
+  const [resource, setResource] = useState<HalResourceType>();
+  const [interactions, setInteractions] = useState<Interactions>();
 
   useEffect(() => {
     const getInteractionHandler = (method, resourceSelf, methodHref) => {
@@ -65,7 +72,7 @@ const useHalResource = ({
       };
     };
 
-    const getInteractions = (halResource) => {
+    const getInteractions = (halResource: HalResourceType) => {
       return halResource
         .getInteractions()
         .map((interaction) => ({
@@ -98,7 +105,7 @@ const useHalResource = ({
           setInteractions(getInteractions(response.halResource));
           setStatus("resolved");
         } else {
-          setResource(null);
+          setResource(undefined);
           const errorResponse = buildErrorResponse({
             message: "Response does not contain a valid HAL resource",
           });
@@ -106,7 +113,7 @@ const useHalResource = ({
           setStatus("rejected");
         }
       } catch (err) {
-        setResource(null);
+        setResource(undefined);
         setError(buildErrorResponse(err));
         setStatus("rejected");
       }
