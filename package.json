@@ -17,7 +17,6 @@
     "@dxc-technology/halstack-client": "^1.6.0",
     "@nx/next": "^20.5.0",
     "@swc/helpers": "~0.5.2",
-    "next": "^14.2.11",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
@@ -32,7 +31,7 @@
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
-    "@dxc-technology/halstack-react": "14.0.0",
+    "@dxc-technology/halstack-react": "^15.0.0",
     "@nx/cypress": "^20.5.0",
     "@nx/esbuild": "^20.5.0",
     "@nx/eslint-plugin": "^20.5.0",
@@ -67,7 +66,7 @@
     "cypress": "^13.0.0",
     "eslint": "~8.46.0",
     "eslint-config-next": "13.4.1",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "10.1.5",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.32.2",
@@ -90,6 +89,7 @@
   },
   "overrides": {
     "esbuild": "0.25.1",
-    "koa": "2.16.1"
+    "koa": "2.16.1",
+    "eslint-config-prettier": "10.1.5"
   }
 }
