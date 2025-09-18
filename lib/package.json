@@ -16,7 +16,7 @@
     "core-js": "^3.36.0"
   },
   "peerDependencies": {
-    "@dxc-technology/halstack-client": "^1.6.1",
+    "@dxc-technology/halstack-client": "^1.6.2",
     "@dxc-technology/halstack-react": "^12.0.0 || ^13.0.0 || >=14.0.0",
     "react": "^18.x",
     "react-dom": "^18.x"
