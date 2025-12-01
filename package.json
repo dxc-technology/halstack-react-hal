@@ -87,7 +87,7 @@
   },
   "overrides": {
     "esbuild": "0.25.1",
-    "koa": "2.16.1",
+    "koa": "2.16.2",
     "eslint-config-prettier": "10.1.5"
   }
 }
