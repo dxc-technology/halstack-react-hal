@@ -16,24 +16,18 @@ global.ResizeObserver = class ResizeObserver {
 describe("HalAutocomplete component tests", () => {
   test("HalAutocomplete renders with correct options", async () => {
     const { getByRole, getByText } = render(
-      <HalAutocomplete
-        collectionUrl="http://localhost:3000/response"
-        propertyName="baseCompany"
-        label="Company name"
-      />
+      <HalAutocomplete collectionUrl="http://localhost:3000/response" propertyName="baseCompany" label="Company name" />
     );
     const input = getByRole("combobox");
     fireEvent.focus(input);
-    const list = getByRole("listbox");
+    const list = getByRole("dialog");
     expect(list).toBeTruthy();
     await waitFor(() => expect(getByText("CGU AUTO PA / SCOB mandatory")).toBeTruthy());
   });
 
   test("HalAutocomplete renders empty without collectionUrl", async () => {
-    const { queryByRole } = render(
-      <HalAutocomplete propertyName="baseCompany" label="Company name" />
-    );
-    const list = queryByRole("listbox");
+    const { queryByRole } = render(<HalAutocomplete propertyName="baseCompany" label="Company name" />);
+    const list = queryByRole("dialog");
     expect(list).not.toBeTruthy();
   });
 
@@ -63,11 +57,7 @@ describe("HalAutocomplete component URL handling tests", () => {
     });
 
     const { getByRole } = render(
-      <HalAutocomplete
-        collectionUrl="http://example.com?existing=true"
-        propertyName="baseCompany"
-        label="Company"
-      />
+      <HalAutocomplete collectionUrl="http://example.com?existing=true" propertyName="baseCompany" label="Company" />
     );
 
     const input = getByRole("combobox");
@@ -90,11 +80,7 @@ describe("HalAutocomplete component URL handling tests", () => {
     });
 
     const { getByRole } = render(
-      <HalAutocomplete
-        collectionUrl="http://example.com"
-        propertyName="baseCompany"
-        label="Company"
-      />
+      <HalAutocomplete collectionUrl="http://example.com" propertyName="baseCompany" label="Company" />
     );
 
     const input = getByRole("combobox");

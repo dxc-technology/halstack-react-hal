@@ -1,4 +1,4 @@
-# Halstack React HAL 
+# Halstack React HAL
 
 Halstack React HAL is an npm library of reusable React components. It brings together two different responsibilities:
 
@@ -159,44 +159,44 @@ These instructions will get you a copy of the project up and running on your loc
 
 The project is divided in two main folders. One is for the actual library, and the other one is a React application using the library.
 
-### Project
+### Run the example app
 
-Install the dependencies for the library and the example project.
+1. Install the dependencies of the library and the example app:
 
 ```bash
-npm install
+npm i && cd example-app && npm i && cd ..
 ```
 
-### Library
-
-Contained in the `lib` folder.
-
-Run the build process updating the bundled files inside the dist folder.
+2. Link the library to the example app from root:
 
 ```bash
-nx build halstack-react-hal #`npx nx build halstack-react-hal` if nx is not recognized as a command.
+npm run link
 ```
 
-To run the tests you need to serve the mock API first
+3. Build the library from root and watch for the changes:
 
 ```bash
-nx serve-test halstack-react-hal #`npx nx serve-test halstack-react-hal` if nx is not recognized as a command.
+npm run build:watch
 ```
 
-and then you can run the tests.
+4. Run the example app from root:
 
 ```bash
-nx test halstack-react-hal #`npx nx test halstack-react-hal` if nx is not recognized as a command.
+npm run dev
 ```
 
-### Example Application
+### Run the tests
 
-Contained in the `app` folder.
-
-Start the application.
+1. Run mock server:
 
 ```bash
-nx serve app #`npx nx serve app` if nx is not recognized as a command.
+npm run serve-server
+```
+
+2. Run tests:
+
+```bash
+npm run test
 ```
 
 Now, anytime you make a change to the library or the app, `nx` will live-reload your local dev server so you can iterate on your component in real-time.
