@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  DxcSpinner,
-  DxcTable,
-  DxcPaginator,
-  DxcFlex,
-  DxcTypography,
-} from "@dxc-technology/halstack-react";
+import { DxcSpinner, DxcTable, DxcPaginator, DxcFlex, DxcTypography } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import styled from "styled-components";
 import icons from "./Icons";
@@ -14,9 +8,7 @@ import { HalTableProps } from "./types";
 const addPageParams = ({ collectionUrl, page, itemsPerPage, sortColumn, handlePagination }) => {
   let url = collectionUrl;
   if (handlePagination) {
-    url += `${url.includes("?") ? "&" : "?"}_start=${
-      (page - 1) * itemsPerPage + 1
-    }&_num=${itemsPerPage}`;
+    url += `${url.includes("?") ? "&" : "?"}_start=${(page - 1) * itemsPerPage + 1}&_num=${itemsPerPage}`;
   }
   if (sortColumn) {
     url += `&_sort=${sortColumn}`;
@@ -28,13 +20,7 @@ type NavigationFunctions = {
   onPageChange: (newPage: number) => void;
   sort: (column: string) => void;
 };
-const useCollection = (
-  collectionUrl,
-  asyncHeadersHandler,
-  headers,
-  itemsPerPage,
-  handlePagination
-) => {
+const useCollection = (collectionUrl, asyncHeadersHandler, headers, itemsPerPage, handlePagination) => {
   const [isLoading, changeIsLoading] = useState(true);
   const [navigationFunctions, changeNavigationFunctions] = useState<NavigationFunctions>({
     onPageChange: () => {},
@@ -79,15 +65,7 @@ const useCollection = (
     };
 
     fetchList();
-  }, [
-    collectionUrl,
-    asyncHeadersHandler,
-    headers,
-    page,
-    itemsPerPage,
-    handlePagination,
-    sortColumn,
-  ]);
+  }, [collectionUrl, asyncHeadersHandler, headers, page, itemsPerPage, handlePagination, sortColumn]);
 
   return {
     isLoading,
@@ -101,11 +79,7 @@ const useCollection = (
 };
 
 const getIconForSortableColumn = (property, sortColumn) =>
-  property === sortColumn
-    ? icons.arrowUp
-    : `-${property}` === sortColumn
-    ? icons.arrowDown
-    : icons.bothArrows;
+  property === sortColumn ? icons.arrowUp : `-${property}` === sortColumn ? icons.arrowDown : icons.bothArrows;
 
 const sortByColumn = (property, sort, sortColumn) => {
   if (property) return property === sortColumn ? sort(`-${property}`) : sort(property);
@@ -113,8 +87,7 @@ const sortByColumn = (property, sort, sortColumn) => {
 
 const getCellInfo = (listItem, columnProperty) => {
   const propertyValue = listItem.summary[columnProperty.displayProperty];
-  const propertyStringValue =
-    propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
+  const propertyStringValue = propertyValue === true ? "Yes" : propertyValue === false ? "No" : propertyValue;
   return columnProperty.mapFunction ? columnProperty.mapFunction(listItem) : propertyStringValue;
 };
 
@@ -127,15 +100,8 @@ const HalTable = ({
   itemsPerPage = 5,
   mode = "default",
 }: HalTableProps): JSX.Element => {
-  const {
-    isLoading,
-    navigationFunctions,
-    page,
-    collectionItems,
-    totalCollectionItems,
-    error,
-    sortColumn,
-  } = useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage, !hidePaginator);
+  const { isLoading, navigationFunctions, page, collectionItems, totalCollectionItems, error, sortColumn } =
+    useCollection(collectionUrl, asyncHeadersHandler, headers, itemsPerPage, !hidePaginator);
   const { onPageChange, sort } = navigationFunctions;
 
   return (
@@ -150,8 +116,8 @@ const HalTable = ({
                   column.sortProperty === sortColumn
                     ? "ascending"
                     : `-${column.sortProperty}` === sortColumn
-                    ? "descending"
-                    : "none"
+                      ? "descending"
+                      : "none"
                 }
               >
                 <HeaderContainer
@@ -205,18 +171,15 @@ const HalTable = ({
           </MessageContainer>
         )
       )}
-      {!error &&
-        !hidePaginator &&
-        totalCollectionItems > 0 &&
-        totalCollectionItems > itemsPerPage && (
-          <DxcPaginator
-            totalItems={totalCollectionItems}
-            itemsPerPage={itemsPerPage}
-            currentPage={page}
-            showGoToPage={true}
-            onPageChange={onPageChange}
-          />
-        )}
+      {!error && !hidePaginator && totalCollectionItems > 0 && totalCollectionItems > itemsPerPage && (
+        <DxcPaginator
+          totalItems={totalCollectionItems}
+          itemsPerPage={itemsPerPage}
+          currentPage={page}
+          showGoToPage={true}
+          onPageChange={onPageChange}
+        />
+      )}
       {error && (
         <MessageContainer hasError={true}>
           <DxcTypography color="#d0011b">{error}</DxcTypography>
@@ -233,8 +196,8 @@ const HeaderContainer = styled.div<{ isSortable: boolean }>`
     props.theme.headerTextAlign === "center"
       ? "center"
       : props.theme.headerTextAlign === "right"
-      ? "flex-end"
-      : "flex-start"};
+        ? "flex-end"
+        : "flex-start"};
   gap: 8px;
   width: fit-content;
   border: 1px solid transparent;

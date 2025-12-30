@@ -1,5 +1,5 @@
 {
-  "name": "@halstack-react-hal/source",
+  "name": "@dxc-technology/halstack-react-hal",
   "version": "0.0.0",
   "description": "DXC Halstack React components library for HAL APIs",
   "repository": "dxc-technology/halstack-react-hal",
@@ -8,7 +8,12 @@
     "email": "DigitalInsurance@dxc.com",
     "url": "https://dxc.com"
   },
-  "nx": {},
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
@@ -20,20 +25,23 @@
     "serve-server": "json-server src/tests/mockCollection.json & sleep 5"
   },
   "private": true,
-  "dependencies": {
+  "peerDependencies": {
     "@dxc-technology/halstack-client": "^1.6.2",
+    "@dxc-technology/halstack-react": "^12.0.0 || ^13.0.0 || >=14.0.0",
+    "react": ">=18 <19",
+    "react-dom": ">=18 <19",
+    "styled-components": "^5.3.6"
+  },
+  "dependencies": {
     "@swc/helpers": "~0.5.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
     "react-is": "18.3.1",
-    "styled-components": "5.3.6",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.0",
     "@babel/preset-react": "^7.20.0",
     "@babel/preset-typescript": "^7.20.0",
-    "@dxc-technology/halstack-react": "^15.0.0",
+    "@dxc-technology/halstack-react": "^16.0.0",
     "@testing-library/react": "14.0.0",
     "@types/jest": "^29.5.14",
     "@types/styled-components": "^5.1.34",
@@ -44,7 +52,9 @@
     "json-server": "^1.0.0-beta.3",
     "prettier": "3.3.3",
     "tsup": "^8.5.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "overrides": {
     "esbuild": "0.25.1"
