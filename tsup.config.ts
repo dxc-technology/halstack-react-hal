@@ -8,6 +8,5 @@ export default defineConfig({
   outDir: 'dist',
   clean: true,
   minify: false,
-  watch: true,
   external: ['react', 'react-dom', 'styled-components', '@dxc-technology/halstack-client', '@dxc-technology/halstack-react']
 });
