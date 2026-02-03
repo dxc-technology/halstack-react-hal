@@ -164,7 +164,7 @@ The project is divided in two main folders. One is for the actual library, and t
 1. Install the dependencies of the library and the example app:
 
 ```bash
-npm i && cd example-app && npm i && cd ..
+npm i && cd app && npm i && cd ..
 ```
 
 2. Link the library to the example app from root:

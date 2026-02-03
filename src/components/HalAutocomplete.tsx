@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { DxcTextInput } from "@dxc-technology/halstack-react";
 import { HalApiCaller } from "@dxc-technology/halstack-client";
 import { HalAutocompleteProps } from "./types";
@@ -13,7 +13,7 @@ const HalAutocomplete = ({
   propertyName,
   ...childProps
 }: HalAutocompleteProps): JSX.Element => {
-  const getSuggestionsFromAPI = useCallback(
+  const getSuggestionsFromAPI = React.useCallback(
     async (value: string): Promise<string[]> => {
       const asyncHeadears = asyncHeadersHandler ? await asyncHeadersHandler() : {};
       const response = await HalApiCaller.get({

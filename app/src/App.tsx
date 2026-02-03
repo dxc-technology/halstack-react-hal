@@ -1,6 +1,5 @@
 import { HalTable, HalAutocomplete } from "@dxc-technology/halstack-react-hal";
 import { DxcApplicationLayout, DxcInset, DxcHeading, DxcFlex } from "@dxc-technology/halstack-react";
-import React from "react";
 
 function App() {
   return (
