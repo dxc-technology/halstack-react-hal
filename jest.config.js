@@ -6,7 +6,6 @@ module.exports = {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
   testEnvironment: "jsdom",
-  modulePathIgnorePatterns: ["<rootDir>/dist/"],
   transform: {
     "^.+\\.[tj]sx?$": "babel-jest",
   },
