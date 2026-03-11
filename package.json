@@ -50,12 +50,13 @@
     "jest-environment-jsdom": "^29.2.0",
     "json-server": "^1.0.0-beta.3",
     "prettier": "3.3.3",
-    "tsup": "^8.5.1",
-    "typescript": "^5.6.3",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.3"
   },
   "overrides": {
-    "esbuild": "0.25.1"
+    "esbuild": "0.25.1",
+    "jsdom": "26.1.0"
   }
 }
