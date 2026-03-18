@@ -5,7 +5,6 @@
   "repository": "dxc-technology/halstack-react-hal",
   "author": {
     "name": "DXC Technology",
-    "email": "DigitalInsurance@dxc.com",
     "url": "https://dxc.com"
   },
   "main": "./dist/index.js",
