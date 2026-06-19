@@ -24,7 +24,7 @@
     "serve-server": "json-server src/tests/mockCollection.json & sleep 5"
   },
   "peerDependencies": {
-    "@dxc-technology/halstack-client": "^1.6.5",
+    "@dxc-technology/halstack-client": "^1.6.6",
     "@dxc-technology/halstack-react": "^17.0.0",
     "react": ">=18 <19",
     "react-dom": ">=18 <19",
